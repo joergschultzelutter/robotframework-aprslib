@@ -23,22 +23,28 @@
 from robot.api.deco import library, keyword
 from robot.api.logger import librarylogger as logger
 import aprslib
+import re
 
 
 @library(scope="GLOBAL", version="0.1", auto_keywords=True)
 class AprsLibrary:
+
+	# APRS-IS connection parameters
 	__aprsis_server = None
 	__aprsis_port = None
 	__aprsis_callsign = None
 	__aprsis_passcode = None
-	__aprsis_filter = ""
+	__aprsis_filter = None
+
+	# the actual APRS-IS connection to the server
+	__ais = None
 
 	def __init__(
 		self,
 		aprsis_server: str = "euro.aprs2.net",
 		aprsis_port: int = 14580,
 		aprsis_callsign: str = "N0CALL",
-		aprsis_passcode: int = -1,
+		aprsis_passcode: int = "-1",
 		aprsis_filter: str = "",
 	):
 		self.__aprsis_server = aprsis_server
@@ -46,6 +52,7 @@ class AprsLibrary:
 		self.__aprsis_callsign = aprsis_callsign
 		self.__aprsis_passcode = aprsis_passcode
 		self.__aprsis_filter = aprsis_filter
+		self.__ais = None
 
 	# Python "Getter" methods
 	#
@@ -72,6 +79,10 @@ class AprsLibrary:
 	def aprsis_filter(self):
 		return self.__aprsis_filter
 
+	@property
+	def ais(self):
+		return self.__ais
+
 	# Python "Setter" methods
 	#
 	# Note that adding an additional Robot decorator (@keyword) will not
@@ -94,10 +105,10 @@ class AprsLibrary:
 	def aprsis_callsign(self, aprsis_callsign: str):
 		if not aprsis_callsign:
 			raise ValueError("No value for APRS-IS callsign has been specified")
-		self.__aprsis_callsign = aprsis_callsign
+		self.__aprsis_callsign = aprsis_callsign.upper()
 
 	@aprsis_passcode.setter
-	def aprsis_passcode(self, aprsis_passcode: int):
+	def aprsis_passcode(self, aprsis_passcode: str):
 		if not aprsis_passcode:
 			raise ValueError("No value for APRS-IS passcode has been specified")
 		self.__aprsis_passcode = aprsis_passcode
@@ -106,7 +117,21 @@ class AprsLibrary:
 	def aprsis_filter(self, aprsis_filter: str):
 		if not aprsis_filter:
 			raise ValueError("No value for APRS-IS filter has been specified")
+		
+		# Apply a crude format filter and check if we have received something valid
+		aprsis_filter = aprsis_filter.lower()
+		if aprsis_filter != "":
+			matches = re.findall(r"^[r|p|b|o|t|s|d|a|e|g|o|q|m|f]\/", string)
+			if not matches:
+				raise ValueError("Invalid APRS-IS server filter string")
 		self.__aprsis_filter = aprsis_filter
+
+	@ais.setter
+	def ais(self, ais: object):
+		# Value can be "None" if we reset the connection. Therefore,
+		# we simply accept the value "as is"
+		self.__ais = ais
+
 
 	#
 	# Robot-specific "getter" keywords
@@ -147,7 +172,7 @@ class AprsLibrary:
 		self.aprsis_callsign = aprsis_callsign
 
 	@keyword("Set APRS-IS Passcode")
-	def set_aprsis_passcode(self, aprsis_passcode: int = None):
+	def set_aprsis_passcode(self, aprsis_passcode: str = None):
 		self.aprsis_passcode = aprsis_passcode
 
 	@keyword("Set APRS-IS Filter")
@@ -174,29 +199,55 @@ class AprsLibrary:
 			raise ValueError("Unknown APRS format")
 		return packet
 
+	@keyword("Connect To APRS-IS")
+	def connect_aprsis(self):
+		# Enforce default passcode if we're dealing with a read-only request
+		if self.aprsis_callsign == "N0CALL":
+			logger.debug(msg="Callsign is N0CALL; resetting APRS-IS passcode to default value")
+			self.aprsis_passcode = "-1"
+
+		if self.ais:
+			raise ValueError("An APRS-IS connection is still open; please close it first")
+		
+		# Create the connection 
+		self.ais = aprslib.IS(callsign=self.aprsis_callsign,passwd=self.aprsis_passcode,host=self.aprsis_server,port=self.aprsis_port)
+
+		# Set the filter if the string is not empty
+		if self.aprsis_filter != "":
+			self.ais.set_filter(self.aprsis_filter)
+		
+		# Finally, connect to APRS-IS
+		self.ais.connect(blocking=True)
+
+		if not self.ais._connected:
+			disconnect_aprsis(self)
+			raise ConnectionError(f"Cannot connect to APRS-IS with server {self.aprsis_server} port {self.aprsis_port} callsign {self.aprsis_callsign}")
+
+		logger.debug(msg="Successfully connected to APRS-IS")
+
+		return self.ais
+
+	@keyword("Disconnect from APRS-IS")
+	def disconnect_aprsis(self):
+		if self.ais:
+			self.ais.close()
+			self.ais = None
+
+	@keyword("Get Current APRS-IS Configuration")
+	def get_aprs_configuration(self):
+		myvalues = {
+			"server": self.aprsis_server,
+			"port": self.aprsis_port,
+			"user": self.aprsis_callsign,
+			"passcode": self.aprsis_passcode,
+			"filter": self.aprsis_filter,
+			"ais": self.ais
+		}
+		return myvalues
+
+
 if __name__ == "__main__":
 	abcd = AprsLibrary()
+	abcd.calculate_aprsis_passcode("MPAD")
+	print(abcd.connect_aprsis())
 
-	print(abcd.aprsis_server)
-	abcd.aprsis_server = "na2.abcd.de"
-	print(abcd.aprsis_server)
-
-	print(abcd.aprsis_filter)
-	abcd.aprsis_filter = "HALLO"
-	print(abcd.aprsis_filter)
-
-	print(abcd.aprsis_passcode)
-	abcd.aprsis_passcode = 5678
-	print(abcd.aprsis_passcode)
-
-	print(abcd.aprsis_port)
-	abcd.aprsis_port = 1234
-	print(abcd.aprsis_port)
-
-	print(abcd.aprsis_callsign)
-	abcd.aprsis_callsign = "HELLOWORLD"
-	print(abcd.aprsis_callsign)
-
-	print (abcd.calculate_aprsis_passcode("MPAD"))
-
-	print (abcd.parse_aprs_packet(r"M0XER-4>APRS64,TF3RPF,WIDE2*,qAR,TF3SUT-2:!/.(M4I^C,O `DXa/A=040849|#B>@\"v90!+|"))
