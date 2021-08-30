@@ -162,7 +162,17 @@ class AprsLibrary:
 		else:
 			return aprslib.passcode(aprsis_callsign)
 
-
+	@keyword("Parse APRS Packet")
+	def parse_aprs_packet(self,aprs_packet: str = None):
+		if not aprs_packet:
+			raise ValueError("No input APRS packet specified")
+		try:
+			packet = aprslib.parse(aprs_packet)
+		except (aprslib.ParseError):
+			raise ValueError("This APRS packet is invalid")
+		except (aprslib.UnknownFormat):
+			raise ValueError("Unknown APRS format")
+		return packet
 
 if __name__ == "__main__":
 	abcd = AprsLibrary()
@@ -188,3 +198,5 @@ if __name__ == "__main__":
 	print(abcd.aprsis_callsign)
 
 	print (abcd.calculate_aprsis_passcode("MPAD"))
+
+	print (abcd.parse_aprs_packet(r"M0XER-4>APRS64,TF3RPF,WIDE2*,qAR,TF3SUT-2:!/.(M4I^C,O `DXa/A=040849|#B>@\"v90!+|"))
