@@ -18,3 +18,7 @@ Mein Erster Testfall
     Set APRS-IS server    www.spiegel.de
     ${b}=     Get APRS-IS Server
     Log To Console      ${b}
+
+    ${b}=   Calculate APRS-IS Passcode      MPAD
+    Log To Console      ${b}
+
