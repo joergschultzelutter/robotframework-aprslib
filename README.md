@@ -16,4 +16,27 @@ When you initialize an APRS connection without explicitly setting parameters suc
 
 This default set of values will allow you to establish a read-only connection to APRS-IS. 
 
-## Settings
+## Change the default server / port / ...
+
+You can either specify all parameters during the initial setup of the library or alternatively via separate keywords
+
+### Define the parameters as part of the library definition
+
+via position parameter
+
+    *** Settings ***
+
+    Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  filter_value
+
+    *** Test Cases ***
+    Mein Erster Testfall
+
+via named parameter
+
+    *** Settings ***
+
+    Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value
+
+    *** Test Cases ***
+    Mein Erster Testfall
+
