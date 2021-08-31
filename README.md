@@ -22,7 +22,7 @@ You can either specify all parameters during the initial setup of the library or
 
 ### Define the parameters as part of the library definition
 
-via position parameter
+Option 1 - via position parameter
 
     *** Settings ***
 
@@ -31,7 +31,7 @@ via position parameter
     *** Test Cases ***
     Mein Erster Testfall
 
-via named parameter
+Option 2 - via named parameter
 
     *** Settings ***
 
