@@ -24,6 +24,12 @@ from robot.api.deco import library, keyword
 from robot.api.logger import librarylogger as logger
 import aprslib
 import re
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s %(module)s -%(levelname)s- %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 __version__ = "0.1"
 __author__ = "Joerg Schultze-Lutter"
@@ -139,9 +145,8 @@ class AprsLibrary:
 			raise ValueError("No value for APRS-IS filter has been specified")
 
 		# Apply a crude format filter and check if we have received something valid
-		aprsis_filter = aprsis_filter.lower()
 		if aprsis_filter != "":
-			matches = re.findall(r"^[r|p|b|o|t|s|d|a|e|g|o|q|m|f]\/", string)
+			matches = re.findall(r"^[r|p|b|o|t|s|d|a|e|g|o|q|m|f]\/", aprsis_filter,re.IGNORECASE)
 			if not matches:
 				raise ValueError("Invalid APRS-IS server filter string")
 		self.__aprsis_filter = aprsis_filter
@@ -154,7 +159,7 @@ class AprsLibrary:
 
 	@aprs_packet.setter
 	def aprs_packet(self, aprs_packet: object):
-		# Value can be of type 'str' or 'dict'. Therefore,
+		# Value can be of type 'b'(ytes) or 'dict'. Therefore,
 		# we simply accept the value "as is"
 		self.__aprs_packet = aprs_packet
 
@@ -186,42 +191,51 @@ class AprsLibrary:
 	#
 	@keyword("Set APRS-IS Server")
 	def set_aprsis_server(self, aprsis_server: str = None):
+		logger.debug(msg="Setting custom server value")
 		self.aprsis_server = aprsis_server
 
 	@keyword("Set APRS-IS Port")
 	def set_aprsis_port(self, aprsis_port: int = None):
+		logger.debug(msg="Setting custom port value")
 		self.aprsis_port = aprsis_port
 
 	@keyword("Set APRS-IS Callsign")
 	def set_aprsis_callsign(self, aprsis_callsign: str = None):
+		logger.debug(msg="Setting custom callsign value")
 		self.aprsis_callsign = aprsis_callsign
 
 	@keyword("Set APRS-IS Passcode")
 	def set_aprsis_passcode(self, aprsis_passcode: str = None):
+		logger.debug(msg="Setting custom passcode value")
 		self.aprsis_passcode = aprsis_passcode
 
 	@keyword("Set APRS-IS Filter")
 	def set_aprsis_filter(self, aprsis_filter: str = None):
+		logger.debug(msg="Setting custom filter value")
 		self.aprsis_filter = aprsis_filter
 
 	# This is the APRS library's callback function which will receive
 	# content from APRS-IS. Dependent on the user's selection parameters,
 	# 'received_aprs_packet' is either of type 'dict' (when decoded) or
-	# 'str' in case the packet. In any case, it simply sets the value of our
+	# 'bytes' in case the packet. In any case, it simply sets the value of our
 	# global variable, thus allowing the AprsLibrary class to capture it and
 	# return it to the user
+	# The StopIteration exception causes the library to terminate the consumer
 	def aprscallback(self,received_aprs_packet):
-##		global __aprs_packet
 		self.aprs_packet = received_aprs_packet
+		raise StopIteration
 
 	# aprslib specific keywords
+	# Despite the fact that the passcode is numeric, APRS-IS expects a string
+	# as passcode. Therefore, we always convert the result from a number to a string
 	@keyword("Calculate APRS-IS Passcode")
 	def calculate_aprsis_passcode(self, aprsis_callsign: str = None):
 		if not aprsis_callsign:
-			return aprslib.passcode(self.aprsis_callsign)
+			return str(aprslib.passcode(self.aprsis_callsign))
 		else:
-			return aprslib.passcode(aprsis_callsign)
+			return str(aprslib.passcode(aprsis_callsign))
 
+	# parse the APRS packet and return its result as a dictionary
 	@keyword("Parse APRS Packet")
 	def parse_aprs_packet(self, aprs_packet: str = None):
 		if not aprs_packet:
@@ -234,7 +248,8 @@ class AprsLibrary:
 			raise ValueError("Unknown APRS format")
 		return packet
 
-	@keyword("Connect To APRS-IS")
+	# Build up the connection parameters and create the connection
+	@keyword("Connect to APRS-IS")
 	def connect_aprsis(self):
 		# Enforce default passcode if we're dealing with a read-only request
 		if self.aprsis_callsign == "N0CALL":
@@ -268,16 +283,19 @@ class AprsLibrary:
 			raise ConnectionError(
 				f"Cannot connect to APRS-IS with server {self.aprsis_server} port {self.aprsis_port} callsign {self.aprsis_callsign}"
 			)
-
 		logger.debug(msg="Successfully connected to APRS-IS")
 		return self.ais
 
+	# Close the connection and destroy the AIS object
 	@keyword("Disconnect from APRS-IS")
 	def disconnect_aprsis(self):
 		if self.ais:
 			self.ais.close()
 			self.ais = None
 
+	# Get a (complete) copy of the current configuration.
+	# A value of ais different to 'None' indicates that a connection
+	# to aprs-IS has been established
 	@keyword("Get Current APRS-IS Configuration")
 	def get_aprs_configuration(self):
 		myvalues = {
@@ -302,7 +320,7 @@ class AprsLibrary:
 			try:
 				self.ais.sendall(packet)
 			except:
-				raise ConnectionError(f"Error while sending message '{packet}' to APRS-IS"
+				raise ConnectionError(f"Error while sending message '{packet}' to APRS-IS")
 		else:
 			# just pretend that we send something to the socket
 			logger.debug(msg=f"Simulate message 'Send' of message '{packet}'")
@@ -312,16 +330,26 @@ class AprsLibrary:
 		# Are we connected?
 		if not self.ais:
 				raise ConnectionError("Not connected to APRS-IS")
+
+		# We seem to be connected. Hey-ho, let's go.
 		logger.debug(msg="Start the APRS-IS consumer")
-		# Start the consumer. We do not use the 'blocking' option as we cannot handle the
-		# callback's data in Robot AND this library at the same time. Instead, the 'receive'
-		# method will receive one (1) record and return it back to the Robot Framework
+		# Start the consumer. We still use the aprslib's "Blocking" parameter as standard but
+		# break the cansumer's digestion process after one record has been received as otherwise,
+		# we cannot communicate the results back to the Robot Framework
         # So if you want to receive more than one record, you need to re-call this keyword
         # from your Robot Framework script
-		self.ais.consumer(callback=aprscallback, blocking=False, immortal=immortal, raw=raw)
+		self.ais.consumer(callback=self.aprscallback, blocking=True, immortal=immortal, raw=raw)
+		return self.aprs_packet
 
 
 if __name__ == "__main__":
 	mytest = AprsLibrary()
-	mytest.calculate_aprsis_passcode("DF1JSL")
+	print(mytest.calculate_aprsis_passcode("DF1JSL-1"))
+	
+	mytest.set_aprsis_callsign("DF1JSL-1")
+	mytest.set_aprsis_passcode("21922")
+	mytest.set_aprsis_filter("g/MPAD/DF1JSL*")
+
 	print(mytest.connect_aprsis())
+	print(mytest.get_aprs_configuration())
+	print(mytest.receive_aprs_packet())
