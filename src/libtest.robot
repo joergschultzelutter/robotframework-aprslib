@@ -4,15 +4,23 @@ Library    AprsLibrary.py
 
 *** Test Cases ***
 Mein Erster Testfall
-    ${b}=   Calculate APRS-IS Passcode      DF1JSL-1
+	${passcode}=            Calculate APRS-IS Passcode      DF1JSL-1
 
-    Set APRS-IS Callsign    DF1JSL-1
-    Set APRS-IS Passcode    ${b}
-    Set APRS-IS Filter      g/MPAD/DF1JSL*
+	Set Local Variable	    ${message}	DF1JSL-1>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday{LM}AA
 
-    ${b}=   Connect to APRS-IS
+	Set APRS-IS Callsign    DF1JSL-1
+	Set APRS-IS Passcode    ${passcode}
+	Set APRS-IS Filter      g/MPAD/DF1JSL*
 
-    ${d}=   Receive APRS Packet
-    Log To Console  ${d}
+	Log                     Connecting to APRS-IS
+	Connect to APRS-IS
 
-    Disconnect from APRS-IS
+	Log                     Send Packet to APRS-IS
+	Send APRS Packet	    ${message}
+
+	Log                     Receive Packet from APRS-IS
+	${d}=                   Receive APRS Packet
+	Log To Console          ${d}
+
+	Log                     Disconnect from APRS-IS
+	Disconnect from APRS-IS
