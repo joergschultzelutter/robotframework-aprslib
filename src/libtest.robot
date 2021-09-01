@@ -12,13 +12,7 @@ Mein Erster Testfall
 
     ${b}=   Connect to APRS-IS
 
-    ${c}=   Get Current APRS-IS Configuration
-    Log To Console  ${c}
-
     ${d}=   Receive APRS Packet
     Log To Console  ${d}
 
-
     Disconnect from APRS-IS
-    ${c}=   Get Current APRS-IS Configuration
-    Log To Console  ${c}
