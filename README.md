@@ -64,4 +64,4 @@ You can either specify all parameters during the initial setup of the library or
 |``Check if Field exists in APRS Message ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
 
 ## Known issues
-- When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD    EFGH``.
+- When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD    EFGH`` (four blanks in the variable's value).
