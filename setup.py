@@ -36,6 +36,6 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Framework :: Robot Framework",
     ],
-    install_requires=["aprs-python>=0.6.47","robotframework >= 3.1"],
+    install_requires=["aprs-python>=0.6.47","robotframework >= 3.2"],
     include_package_data=True,
 )
