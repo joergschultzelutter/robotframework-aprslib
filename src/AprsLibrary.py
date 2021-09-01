@@ -25,7 +25,9 @@ from robot.api.logger import librarylogger as logger
 import aprslib
 import re
 
-@library(scope="GLOBAL", version="0.1", auto_keywords=True)
+__version__ = "0.1"
+
+@library(scope="GLOBAL", auto_keywords=True)
 class AprsLibrary:
 
 	# These are our default APRS-IS connection parameters
