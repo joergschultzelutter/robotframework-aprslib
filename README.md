@@ -22,7 +22,7 @@ You can either specify all parameters during the initial setup of the library or
 
 ### Define the parameters as part of the library definition
 
-Option 1 - via position parameter
+#### Option 1 - via position parameter
 
     *** Settings ***
 
@@ -31,7 +31,7 @@ Option 1 - via position parameter
     *** Test Cases ***
     Mein Erster Testfall
 
-Option 2 - via named parameter
+#### Option 2 - via named parameter
 
     *** Settings ***
 
@@ -39,4 +39,22 @@ Option 2 - via named parameter
 
     *** Test Cases ***
     Mein Erster Testfall
+
+### Use Robot Keywords
+| Keyword|Description|
+|------- |-----------|
+|``Set APRS-IS Server`` and ``Get APRS-IS Server``|Sets/Gets the APRS-IS server|
+|``Set APRS-IS Port`` and ``Get APRS-IS Port``|Sets/Gets the APRS-IS port|
+|``Set APRS-IS Callsign`` and ``Get APRS-IS Callsign``|Sets/Gets the APRS-IS callsign (user name)|
+|``Set APRS-IS Passcode`` and ``Get APRS-IS Passcode``|Sets/Gets the APRS-IS passcode|
+|``Set APRS-IS Filter`` and ``Get APRS-IS Filter``|Sets/Gets the APRS-IS server filter. Note: This option performs a (basic) sanity check on the content and will cause an error in case an invalid filter qualifier has been submitted|
+|``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user|
+
+## Other Robot Keywords supported by this library
+| Keyword|Description|
+|------- |-----------|
+|``Calculate APRS-IS Passcode``|Calculates the APRS-IS passcode (based on the given call sign) and returns it to the user|
+|``Parse APRS Packet``|Parses the given APRS packet. In case the packet is either invalid or its format is unknown, an exception will be triggered|
+|``Connect to APRS-IS``|Establishes a socket connection to the APRS-IS network|
+|``Disconnect from APRS-IS``|Disconnects from the APRS-IS network|
 
