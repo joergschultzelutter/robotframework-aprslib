@@ -51,10 +51,17 @@ You can either specify all parameters during the initial setup of the library or
 |``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user|
 
 ## Other Robot Keywords supported by this library
-| Keyword|Description|
-|------- |-----------|
-|``Calculate APRS-IS Passcode``|Calculates the APRS-IS passcode (based on the given call sign) and returns it to the user|
-|``Parse APRS Packet``|Parses the given APRS packet. In case the packet is either invalid or its format is unknown, an exception will be triggered|
-|``Connect to APRS-IS``|Establishes a socket connection to the APRS-IS network|
-|``Disconnect from APRS-IS``|Disconnects from the APRS-IS network|
+| Keyword|Description|Parameter|
+|------- |-----------|--|
+|``Calculate APRS-IS Passcode``|Calculates the APRS-IS passcode (based on the given call sign) and returns it to the user|``aprsis_callsign``|
+|``Parse APRS Packet``|Parses the given APRS packet. In case the packet is either invalid or its format is unknown, an exception will be triggered|``aprs_packet``|
+|``Connect to APRS-IS``|Establishes a socket connection to the APRS-IS network| |
+|``Disconnect from APRS-IS``|Disconnects from the APRS-IS network| |
+|``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` and ``simulate_send`` (bool)|
+|``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``immortal`` and ``raw`` (both bool params)|
+|``Get APRS Message ....``|various wrappers; e.g. ``Get APRS Message Raw`` will return the raw message string if it is present in the message|``aprs_packet``|
+|``Get Value From APRS Message``|called by the aporementioned ``Get APRS Message ....`` functions |``aprs_packet`` and ``field_name``|
+|``Check if Field exists in APRS Message ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
 
+## Known issues
+- When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD    EFGH``.
