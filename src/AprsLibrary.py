@@ -26,6 +26,7 @@ import aprslib
 import re
 
 __version__ = "0.1"
+__author__ = "Joerg Schultze-Lutter"
 
 @library(scope="GLOBAL", auto_keywords=True)
 class AprsLibrary:
