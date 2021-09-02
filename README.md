@@ -101,9 +101,9 @@ You can either specify all parameters during the initial setup of the library or
 |``Disconnect from APRS-IS``|Disconnects from the APRS-IS network| |
 |``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` and ``simulate_send`` (bool)|
 |``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``immortal`` and ``raw`` (both bool params)|
-|``Get APRS Message ....``|various wrappers; e.g. ``Get APRS Message Raw`` will return the raw message string if it is present in the message|``aprs_packet``|
-|``Get Value From APRS Message``|called by the aporementioned ``Get APRS Message ....`` functions |``aprs_packet`` and ``field_name``|
-|``Check if Field exists in APRS Message ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
+|``Get xxx Value from APRS Message ....``|various wrappers; e.g. ``Get Message Text From APRS Message`` will return the decoded message string if it is present in the message|``aprs_packet``|
+|``Get Value From APRS Message``|called by the aporementioned ``Get ... Value fron APRS Message`` functions |``aprs_packet`` and ``field_name``|
+|``APRS Message Should Contain ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
 
 ## Known issues
 - When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
@@ -113,4 +113,4 @@ You can either specify all parameters during the initial setup of the library or
 
 - APRS is a registered trademark of APRS Software and Bob Bruninga, WB4APR. Thank you Bob!
 - This is a hobby project. It has no commercial background whatsoever.
-- Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library is likely not for you. Alternatively, you may want to explore the option of getting your own amateur radio license (it's a great hobby, trust me).
+- Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library is not for you. Alternatively, you may want to explore the option of getting your own amateur radio license (it's a great hobby).
