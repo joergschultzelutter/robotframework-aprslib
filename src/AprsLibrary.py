@@ -41,6 +41,10 @@ class AprsLibrary:
     # These are our default APRS-IS connection parameters
     # Change these settings if you e.g. prefer to use
     # a different APRS-IS server
+    # Dependent on the APRS Server that you want to
+    # connect with, read-only access via N0CALL may not work
+    # at all and you will receive connection errors when
+    # trying to do so.
     DEFAULT_SERVER = "euro.aprs2.net"
     DEFAULT_PORT = 14580
     DEFAULT_CALLSIGN = "N0CALL"
@@ -54,10 +58,10 @@ class AprsLibrary:
     __aprsis_passcode = None
     __aprsis_filter = None
 
-    # Packet received through APRS-IS connection
+    # A packet which was received through APRS-IS connection
     __aprs_packet = None
 
-    # the actual APRS-IS connection to the server
+    # This is the actual APRS-IS connection object to the server
     __ais = None
 
     def __init__(
@@ -147,7 +151,7 @@ class AprsLibrary:
         # Apply a crude format filter and check if we have received something valid
         if aprsis_filter != "":
             matches = re.findall(
-                r"^[r|p|b|o|t|s|d|a|e|g|o|q|m|f]\/", aprsis_filter, re.IGNORECASE
+                r"^[r|p|b|o|t|s|d|a|e|g|q|m|f]\/", aprsis_filter, re.IGNORECASE
             )
             if not matches:
                 raise ValueError("Invalid APRS-IS server filter string")
@@ -161,7 +165,7 @@ class AprsLibrary:
 
     @aprs_packet.setter
     def aprs_packet(self, aprs_packet: object):
-        # Value can be of type 'b'(ytes) or 'dict'. Therefore,
+        # Value can be of type 'b'(ytes), 'str' or 'dict'. Therefore,
         # we simply accept the value "as is"
         self.__aprs_packet = aprs_packet
 
@@ -341,55 +345,62 @@ class AprsLibrary:
         # break the cansumer's digestion process after one record has been received as otherwise,
         # we cannot communicate the results back to the Robot Framework
         # So if you want to receive more than one record, you need to re-call this keyword
-        # from your Robot Framework script
+        # from your Robot Framework script in order to receive a subsequential APRS-IS packet
         self.ais.consumer(
             callback=self.aprscallback, blocking=True, immortal=immortal, raw=raw
         )
         return self.aprs_packet
 
-    @keyword("Get APRS Message Format")
+    # Getter methods for the APRS message(s), mainly targeting APRS 'message' types
+    # You can call the generic method get_value_from_aprs_message along with your 
+    # key in order to retrieve its value if your attribute is not listed here
+    # If the given key does not exist, an exception will be thrown
+    #
+    # All keywords can process raw (byte-format or str-format) as well as 
+    # processed APRS messages (which exist as dict objects)
+    @keyword("Get Format Value from APRS Message")
     def get_message_format(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="format"
         )
 
-    @keyword("Get APRS Message Raw")
+    @keyword("Get Raw Message Value from APRS Message")
     def get_message_raw(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="raw"
         )
 
-    @keyword("Get APRS Message From")
+    @keyword("Get From Value from APRS Message")
     def get_message_from(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="from"
         )
 
-    @keyword("Get APRS Message To")
+    @keyword("Get To Value from APRS Message")
     def get_message_to(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="to"
         )
 
-    @keyword("Get APRS Message Text")
+    @keyword("Get Message Text Value from APRS Message")
     def get_message_text(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="message_text"
         )
 
-    @keyword("Get APRS Message Response")
+    @keyword("Get Response Value from APRS Message")
     def get_message_response(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="response"
         )
 
-    @keyword("Get APRS Message Addresse")
+    @keyword("Get Adresse Value from APRS Message")
     def get_message_addresse(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="addresse"
         )
 
-    @keyword("Get APRS Message Number")
+    @keyword("Get Message Number Value from APRS Message ")
     def get_message_no(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="msgNo"
@@ -422,7 +433,63 @@ class AprsLibrary:
                     f"Attribute '{field_name}' is not present in this APRS message"
                 )
 
-    @keyword("Check if Field exists in APRS Message")
+    # Check methods for the APRS message(s), mainly targeting APRS 'message' types
+    # You can call the generic method check_if_field_exists_in_packet along with your 
+    # key in order to retrieve its value if your attribute is not listed here
+    # All functions return True value if the key exist - otherwise, the result is False
+    #
+    # All keywords can process raw (byte-format or str-format) as well as 
+    # processed APRS messages (which exist as dict objects)
+
+    @keyword("APRS Message Should Contain Format")
+    def get_message_format(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="format"
+        )
+
+    @keyword("APRS Message Should Contain Raw Message")
+    def get_message_raw(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="raw"
+        )
+
+    @keyword("APRS Message Should Contain From")
+    def get_message_from(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="from"
+        )
+
+    @keyword("APRS Message Should Contain To")
+    def get_message_to(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="to"
+        )
+
+    @keyword("APRS Message Should Contain Message Text")
+    def get_message_text(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="message_text"
+        )
+
+    @keyword("APRS Message Should Contain Response")
+    def get_message_response(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="response"
+        )
+
+    @keyword("APRS Message Should Contain Adresse")
+    def get_message_addresse(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="addresse"
+        )
+
+    @keyword("APRS Message Should Contain Message Number")
+    def get_message_no(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="msgNo"
+        )
+
+    @keyword("APRS Message should contain")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
         t_dict = type(dict())
         t_str = type(str())
