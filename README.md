@@ -7,97 +7,97 @@
 
 ### Send a single packet to APRS-IS and wait for the response
 
-	# Send a single message to WXBOt, wait for a response message and display it on the console. 
-	# Then terminate the test.
-	#
-	# Author: Joerg Schultze-Lutter, DF1JSL
-	# https://www.github.com/joergschultzelutter
+    # Send a single message to WXBOt, wait for a response message and display it on the console. 
+    # Then terminate the test.
+    #
+    # Author: Joerg Schultze-Lutter, DF1JSL
+    # https://www.github.com/joergschultzelutter
 
-	*** Settings ***
-	Library						AprsLibrary.py
+    *** Settings ***
+    Library                     AprsLibrary.py
 
-	Suite Setup					Open APRS-IS Connection
-	Suite Teardown				Close APRS-IS Connection
+    Suite Setup                 Open APRS-IS Connection
+    Suite Teardown              Close APRS-IS Connection
 
-	*** Variables ***
-	${message}					DF1JSL-15>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
-	${callsign}					DF1JSL-15
-	${filter}					g/MPAD/DF1JSL*
+    *** Variables ***
+    ${message}                  DF1JSL-15>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
+    ${callsign}                 DF1JSL-15
+    ${filter}                   g/MPAD/DF1JSL*
 
-	*** Test Cases ***
-	Send packet to APRS-IS with callsign ${callsign}
-		Log						Send Packet to APRS-IS
-		Send APRS Packet		${message}
+    *** Test Cases ***
+    Send packet to APRS-IS with callsign ${callsign}
+        Log                     Send Packet to APRS-IS
+        Send APRS Packet        ${message}
 
-	Receive packet from APRS-IS with callsign ${callsign}
-		Log						Receive Packet from APRS-IS
-		${packet} =				Receive APRS Packet
-		Log To Console			${packet}
+    Receive packet from APRS-IS with callsign ${callsign}
+        Log                     Receive Packet from APRS-IS
+        ${packet} =             Receive APRS Packet
+        Log To Console          ${packet}
 
-	*** Keywords ***
-	Open APRS-IS Connection
-		${passcode}=			Calculate APRS-IS Passcode	${callsign}
+    *** Keywords ***
+    Open APRS-IS Connection
+        ${passcode}=            Calculate APRS-IS Passcode  ${callsign}
 
-		Set APRS-IS Callsign	${callsign}
-		Set APRS-IS Passcode	${passcode}
-		Set APRS-IS Filter		${filter}
+        Set APRS-IS Callsign    ${callsign}
+        Set APRS-IS Passcode    ${passcode}
+        Set APRS-IS Filter      ${filter}
 
-		Log						Connecting to APRS-IS
-		Connect to APRS-IS
+        Log                     Connecting to APRS-IS
+        Connect to APRS-IS
 
-	Close APRS-IS Connection
-		Log						Disconnect from APRS-IS
-		Disconnect from APRS-IS
+    Close APRS-IS Connection
+        Log                     Disconnect from APRS-IS
+        Disconnect from APRS-IS
 
 ## Capture 10 APRS messages and display them in raw format
 
-	# This is a simple robot which captures up to 10 APRS 'message' type messages and 
-	# logs their raw messages to the console. Then terminate the test
-	# Author: Joerg Schultze-Lutter, DF1JSL
-	# https://www.github.com/joergschultzelutter
+    # This is a simple robot which captures up to 10 APRS 'message' type messages and 
+    # logs their raw messages to the console. Then terminate the test
+    # Author: Joerg Schultze-Lutter, DF1JSL
+    # https://www.github.com/joergschultzelutter
 
-	*** Settings ***
-	Library						AprsLibrary.py
+    *** Settings ***
+    Library                     AprsLibrary.py
 
-	Suite Setup					Open APRS-IS Connection
-	Suite Teardown				Close APRS-IS Connection
+    Suite Setup                 Open APRS-IS Connection
+    Suite Teardown              Close APRS-IS Connection
 
-	*** Variables ***
-	${callsign}					DF1JSL-15
-	${filter}					t/m
+    *** Variables ***
+    ${callsign}                 DF1JSL-15
+    ${filter}                   t/m
 
-	*** Test Cases ***
-	Echo APRS-IS Raw Traffic to Console
-		[Documentation]	Capture up to 10 APRS messages and display them on the console
+    *** Test Cases ***
+    Echo APRS-IS Raw Traffic to Console
+        [Documentation] Capture up to 10 APRS messages and display them on the console
 
-		# Robot has no WHILE loop. Therefore, we need to use a FOR loop.
-		FOR		${i}	IN RANGE	10
-			Receive Packet From APRS-IS
-		END
+        # Robot has no WHILE loop. Therefore, we need to use a FOR loop.
+        FOR  ${i} IN RANGE  10
+            Receive Packet From APRS-IS
+        END
 
-	*** Keywords ***
-	Open APRS-IS Connection
-		${passcode}=			Calculate APRS-IS Passcode	${callsign}
+    *** Keywords ***
+    Open APRS-IS Connection
+        ${passcode}=            Calculate APRS-IS Passcode  ${callsign}
 
-		Set APRS-IS Callsign	${callsign}
-		Set APRS-IS Passcode	${passcode}
-		Set APRS-IS Filter		${filter}
+        Set APRS-IS Callsign    ${callsign}
+        Set APRS-IS Passcode    ${passcode}
+        Set APRS-IS Filter      ${filter}
 
-		Log						Connecting to APRS-IS
-		Connect to APRS-IS
+        Log                     Connecting to APRS-IS
+        Connect to APRS-IS
 
-	Close APRS-IS Connection
-		Log						Disconnect from APRS-IS
-		Disconnect from APRS-IS
+    Close APRS-IS Connection
+        Log                     Disconnect from APRS-IS
+        Disconnect from APRS-IS
 
-	Receive packet from APRS-IS 
-		# Receive the package. By default, aprslib decodes it ...
-		${packet} =				Receive APRS Packet
+    Receive packet from APRS-IS 
+        # Receive the package. By default, aprslib decodes it ...
+        ${packet} =             Receive APRS Packet
 
-		# ... but for now, let's get the raw message from that decode packet
-		# and display it on the console
-		${packet} =				Get Raw Message Value From APRS Packet	${packet}	
-		Log To Console			${packet}
+        # ... but for now, let's get the raw message from that decode packet
+        # and display it on the console
+        ${packet} =             Get Raw Message Value From APRS Packet  ${packet}
+        Log To Console          ${packet}
 
 ## Default settings when creating new APRS-IS connection
 
