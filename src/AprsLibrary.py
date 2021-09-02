@@ -442,14 +442,14 @@ class AprsLibrary:
 
 if __name__ == "__main__":
     mytest = AprsLibrary()
-    print(mytest.calculate_aprsis_passcode("DF1JSL-1"))
+    passcode = mytest.calculate_aprsis_passcode("DF1JSL-15")
 
-    mytest.set_aprsis_callsign("DF1JSL-1")
-    mytest.set_aprsis_passcode("21922")
+    mytest.set_aprsis_callsign("DF1JSL-15")
+    mytest.set_aprsis_passcode(passcode)
     mytest.set_aprsis_filter("g/MPAD/DF1JSL*")
 
     print(mytest.connect_aprsis())
     print(mytest.get_aprs_configuration())
-    print(mytest.send_aprs_packet(r"DF1JSL-1>APRS::WXBOT    :sunday{LM}AA"))
+    print(mytest.send_aprs_packet(r"DF1JSL-15>APRS::WXBOT    :sunday"))
     print(mytest.receive_aprs_packet())
     mytest.disconnect_aprsis()
