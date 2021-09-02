@@ -1,9 +1,51 @@
 # robotframework-aprslib
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Robot Framework keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. This Robot library allows you to establish a connection to the APRS-IS servers and send/receive/decode APRS requests. Most (but not all) features of the original Python library are supported.
+```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows you to establish a connection to the APRS-IS servers and send/receive/decode APRS requests. 
 
-Be advised that APRS-IS write access requires you to have a valid amateur radio license. If you don't know what APRS-IS or you are not a licensed ham radio amateur, then this program is likely not for you.
+## Examples
+### Send a single packet and receive a response
+
+	# Send a single request to WXBOT and wait for its response
+
+	*** Settings ***
+
+	Library				AprsLibrary
+
+	Suite Setup			Open APRS-IS Connection
+	Suite Teardown		        Close APRS-IS Connection
+
+	*** Variables ***
+	${message}			DF1JSL-15>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
+	${callsign}			DF1JSL-15
+	${filter		        g/MPAD/DF1JSL*
+
+	*** Test Cases ***
+	Send packet to APRS-IS with callsign ${callsign}
+		Log               Send Packet to APRS-IS
+		Send APRS Packet  ${message}
+
+	Receive packet from APRS-IS with callsign ${callsign}
+		Log               Receive Packet from APRS-IS
+		${d} =            Receive APRS Packet
+		Log To Console	  ${d}
+
+
+	*** Keywords ***
+	Open APRS-IS Connection
+		${passcode}=  Calculate APRS-IS Passcode  ${callsign}
+
+		Set APRS-IS Callsign	${callsign}
+		Set APRS-IS Passcode	${passcode}
+		Set APRS-IS Filter	${filter}
+
+		Log   Connecting to APRS-IS
+		Connect to APRS-IS
+
+	Close APRS-IS Connection
+		Log	Disconnect from APRS-IS
+		Disconnect from APRS-IS
+
 
 ## Default settings when creating new APRS-IS connection
 
@@ -64,4 +106,11 @@ You can either specify all parameters during the initial setup of the library or
 |``Check if Field exists in APRS Message ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
 
 ## Known issues
-- When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD    EFGH`` (four blanks in the variable's value).
+- When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
+- Apart from minor helper methods for the connection setup, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) everything that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported - nothing more and nothing less.
+
+## The fine print
+
+- APRS is a registered trademark of APRS Software and Bob Bruninga, WB4APR. Thank you Bob!
+- This is a hobby project. It has no commercial background whatsoever.
+- Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library might not be for you. Alternatively, you want to explore the option of getting your own amateur radio license (it's a great hobby, trust me).
