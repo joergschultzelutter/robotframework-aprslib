@@ -101,13 +101,14 @@ You can either specify all parameters during the initial setup of the library or
 |``Disconnect from APRS-IS``|Disconnects from the APRS-IS network| |
 |``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` and ``simulate_send`` (bool)|
 |``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``immortal`` and ``raw`` (both bool params)|
-|``Get xxx Value from APRS Message ....``|various wrappers; e.g. ``Get Message Text From APRS Message`` will return the decoded message string if it is present in the message|``aprs_packet``|
-|``Get Value From APRS Message``|called by the aporementioned ``Get ... Value fron APRS Message`` functions |``aprs_packet`` and ``field_name``|
-|``APRS Message Should Contain ....``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` |``aprs_packet`` and ``field_name``|
+|``Get <field name> Value from APRS Message``|various wrappers; e.g. ``Get Message Text From APRS Message`` will return the decoded message string if it is present in the message|``aprs_packet``|
+|``Get Value From APRS Message``|called by the aporementioned ``Get <field name> Value fron APRS Message`` functions |``aprs_packet`` and ``field_name``|
+|``APRS Message Should Contain <field name>``|Similar to ``Get Value From APRS Message`` but only returns ``True``/``False`` in case the field does / does not exit|``aprs_packet`` and ``field_name``|
+|``APRS Message Should Contain``|called by the aporementioned ``APRS Message Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
 
 ## Known issues
 - When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
-- Apart from minor helper methods for the connection setup, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) everything that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported - nothing more and nothing less.
+- Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less.
 
 ## The fine print
 
