@@ -1,9 +1,10 @@
-# Send a single message to WXBOt, wait for a response message and display it on the console.
+# Send a single message to WXBOt, wait for a response message and display it on the console. 
+# Then terminate the test.
+#
 # Author: Joerg Schultze-Lutter, DF1JSL
 # https://www.github.com/joergschultzelutter
 
 *** Settings ***
-
 Library						AprsLibrary.py
 
 Suite Setup					Open APRS-IS Connection
@@ -21,9 +22,8 @@ Send packet to APRS-IS with callsign ${callsign}
 
 Receive packet from APRS-IS with callsign ${callsign}
 	Log						Receive Packet from APRS-IS
-	${d} =					Receive APRS Packet
-	Log To Console			${d}
-
+	${packet} =				Receive APRS Packet
+	Log To Console			${packet}
 
 *** Keywords ***
 Open APRS-IS Connection

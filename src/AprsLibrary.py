@@ -358,56 +358,56 @@ class AprsLibrary:
     #
     # All keywords can process raw (byte-format or str-format) as well as 
     # processed APRS messages (which exist as dict objects)
-    @keyword("Get Format Value from APRS Message")
+    @keyword("Get Format Value from APRS Packet")
     def get_message_format(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="format"
         )
 
-    @keyword("Get Raw Message Value from APRS Message")
+    @keyword("Get Raw Message Value from APRS Packet")
     def get_message_raw(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="raw"
         )
 
-    @keyword("Get From Value from APRS Message")
+    @keyword("Get From Value from APRS Packet")
     def get_message_from(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="from"
         )
 
-    @keyword("Get To Value from APRS Message")
+    @keyword("Get To Value from APRS Packet")
     def get_message_to(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="to"
         )
 
-    @keyword("Get Message Text Value from APRS Message")
+    @keyword("Get Message Text Value from APRS Packet")
     def get_message_text(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="message_text"
         )
 
-    @keyword("Get Response Value from APRS Message")
+    @keyword("Get Response Value from APRS Packet")
     def get_message_response(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="response"
         )
 
-    @keyword("Get Adresse Value from APRS Message")
+    @keyword("Get Adresse Value from APRS Packet")
     def get_message_addresse(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="addresse"
         )
 
-    @keyword("Get Message Number Value from APRS Message")
-    def get_message_no(self, aprs_packet):
-        return self.get_value_from_aprs_message(
+    @keyword("Get Message Number Value from APRS Packet")
+    def get_msgno(self, aprs_packet):
+        return self.get_value_from_aprs_packet(
             aprs_packet=aprs_packet, field_name="msgNo"
         )
 
-    @keyword("Get Value From APRS Message")
-    def get_value_from_aprs_message(self, aprs_packet, field_name):
+    @keyword("Get Value From APRS Packet")
+    def get_value_from_aprs_packet(self, aprs_packet, field_name):
         t_dict = type(dict())
         t_str = type(str())
         t_byte = type(bytes())
@@ -441,50 +441,50 @@ class AprsLibrary:
     # All keywords can process raw (byte-format or str-format) as well as 
     # processed APRS messages (which exist as dict objects)
 
-    @keyword("APRS Message Should Contain Format")
-    def get_message_format(self, aprs_packet):
+    @keyword("APRS Packet Should Contain Format")
+    def check_packet_format(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="format"
         )
 
     @keyword("APRS Message Should Contain Raw Message")
-    def get_message_raw(self, aprs_packet):
+    def check_packet_raw(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="raw"
         )
 
     @keyword("APRS Message Should Contain From")
-    def get_message_from(self, aprs_packet):
+    def check_packet_from(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="from"
         )
 
     @keyword("APRS Message Should Contain To")
-    def get_message_to(self, aprs_packet):
+    def check_packet_to(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="to"
         )
 
     @keyword("APRS Message Should Contain Message Text")
-    def get_message_text(self, aprs_packet):
+    def check_packet_text(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="message_text"
         )
 
     @keyword("APRS Message Should Contain Response")
-    def get_message_response(self, aprs_packet):
+    def check_packet_response(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="response"
         )
 
     @keyword("APRS Message Should Contain Adresse")
-    def get_message_addresse(self, aprs_packet):
+    def check_packet_addresse(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="addresse"
         )
 
     @keyword("APRS Message Should Contain Message Number")
-    def get_message_no(self, aprs_packet):
+    def check_packet_msgno(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="msgNo"
         )

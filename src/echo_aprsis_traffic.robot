@@ -1,4 +1,5 @@
-# This is a simple robot which captures up to 100 APRS 'message' type messages and logs them to the console.
+# This is a simple robot which captures up to 10 APRS 'message' type messages and 
+# logs their raw messages to the console. Then terminate the test
 # Author: Joerg Schultze-Lutter, DF1JSL
 # https://www.github.com/joergschultzelutter
 
@@ -13,11 +14,11 @@ ${callsign}					DF1JSL-15
 ${filter}					t/m
 
 *** Test Cases ***
-Monitor all APRS-IS Traffic
-	[Documentation]	Capture up to 100 APRS messages and display them on the console
+Echo APRS-IS Raw Traffic to Console
+	[Documentation]	Capture up to 10 APRS messages and display them on the console
 
 	# Robot has no WHILE loop. Therefore, we need to use a FOR loop.
-	FOR		${i}	IN RANGE	100
+	FOR		${i}	IN RANGE	10
 		Receive Packet From APRS-IS
 	END
 
@@ -37,5 +38,10 @@ Close APRS-IS Connection
 	Disconnect from APRS-IS
 
 Receive packet from APRS-IS 
-	${d} =					Receive APRS Packet
-	Log To Console			${d}
+	# Receive the package. By default, aprslib decodes it ...
+	${packet} =				Receive APRS Packet
+
+	# ... but for now, let's get the raw message from that decode packet
+	# and display it on the console
+	${packet} =				Get Raw Message Value From APRS Packet	${packet}	
+	Log To Console			${packet}
