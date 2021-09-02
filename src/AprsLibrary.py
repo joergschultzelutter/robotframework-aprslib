@@ -400,7 +400,7 @@ class AprsLibrary:
             aprs_packet=aprs_packet, field_name="addresse"
         )
 
-    @keyword("Get Message Number Value from APRS Message ")
+    @keyword("Get Message Number Value from APRS Message")
     def get_message_no(self, aprs_packet):
         return self.get_value_from_aprs_message(
             aprs_packet=aprs_packet, field_name="msgNo"
