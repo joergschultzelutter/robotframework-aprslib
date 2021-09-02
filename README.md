@@ -14,7 +14,7 @@ When you initialize an APRS connection without explicitly setting parameters suc
 - __passcode__ = ``-1``
 - __aprs-is filter__ = not set
 
-This default set of values will allow you to establish a read-only connection to APRS-IS. 
+This default set of values will allow you to establish a read-only connection to APRS-IS, assuming that the respective APRS-IS server that you intend to connect with permits such a connection.
 
 ## Change the default server / port / ...
 
