@@ -64,23 +64,23 @@ You can either specify all parameters during the initial setup of the library or
 
 ### Define the parameters as part of the library definition
 
-#### Option 1 - via position parameter
+#### Option 1 - as position parameters
 
     *** Settings ***
 
     Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  filter_value
 
     *** Test Cases ***
-    Mein Erster Testfall
+    My first test case
 
-#### Option 2 - via named parameter
+#### Option 2 - as named parameters
 
     *** Settings ***
 
     Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value
 
     *** Test Cases ***
-    Mein Erster Testfall
+    My first test case
 
 ### Use Robot Keywords
 | Keyword|Description|
@@ -89,8 +89,8 @@ You can either specify all parameters during the initial setup of the library or
 |``Set APRS-IS Port`` and ``Get APRS-IS Port``|Sets/Gets the APRS-IS port|
 |``Set APRS-IS Callsign`` and ``Get APRS-IS Callsign``|Sets/Gets the APRS-IS callsign (user name)|
 |``Set APRS-IS Passcode`` and ``Get APRS-IS Passcode``|Sets/Gets the APRS-IS passcode|
-|``Set APRS-IS Filter`` and ``Get APRS-IS Filter``|Sets/Gets the APRS-IS server filter. Note: This option performs a (basic) sanity check on the content and will cause an error in case an invalid filter qualifier has been submitted|
-|``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user|
+|``Set APRS-IS Filter`` and ``Get APRS-IS Filter``|Sets/Gets the APRS-IS server filter. Note: This keyword performs a (basic) sanity check on the content and will cause an error in case an invalid filter qualifier has been submitted|
+|``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user (basically a collecttion of all previously mentioned keywords). An AIS opject value different to ```None``` indicates an active connection.|
 
 ## Other Robot Keywords supported by this library
 | Keyword|Description|Parameter|
@@ -113,4 +113,4 @@ You can either specify all parameters during the initial setup of the library or
 
 - APRS is a registered trademark of APRS Software and Bob Bruninga, WB4APR. Thank you Bob!
 - This is a hobby project. It has no commercial background whatsoever.
-- Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library might not be for you. Alternatively, you want to explore the option of getting your own amateur radio license (it's a great hobby, trust me).
+- Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library is likely not for you. Alternatively, you may want to explore the option of getting your own amateur radio license (it's a great hobby, trust me).
