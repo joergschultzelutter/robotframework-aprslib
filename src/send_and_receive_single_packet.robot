@@ -11,7 +11,7 @@ Suite Setup					Open APRS-IS Connection
 Suite Teardown				Close APRS-IS Connection
 
 *** Variables ***
-${message}					DF1JSL-15>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
+${message}					${callsign}>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
 ${callsign}					DF1JSL-15
 ${filter}					g/MPAD/DF1JSL*
 
