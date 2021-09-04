@@ -50,6 +50,7 @@ class AprsLibrary:
     DEFAULT_CALLSIGN = "N0CALL"
     DEFAULT_PASSCODE = "-1"
     DEFAULT_FILTER = ""
+    DEFAULT_APRS_MSGNO = 675
 
     # Class-internal APRS-IS connection parameters
     __aprsis_server = None
@@ -57,12 +58,16 @@ class AprsLibrary:
     __aprsis_callsign = None
     __aprsis_passcode = None
     __aprsis_filter = None
+    __aprsis_msgno = None
 
     # A packet which was received through APRS-IS connection
     __aprs_packet = None
 
     # This is the actual APRS-IS connection object to the server
     __ais = None
+
+    # This is the maximum numeric message number boundary (numeric 675 = alpha "ZZ")
+    MAX_MSGNO_BOUNDARY = 675
 
     def __init__(
         self,
@@ -71,12 +76,14 @@ class AprsLibrary:
         aprsis_callsign: str = DEFAULT_CALLSIGN,
         aprsis_passcode: int = DEFAULT_PASSCODE,
         aprsis_filter: str = DEFAULT_FILTER,
+        aprsis_msgno: int = DEFAULT_APRS_MSGNO,
     ):
         self.__aprsis_server = aprsis_server
         self.__aprsis_port = aprsis_port
         self.__aprsis_callsign = aprsis_callsign
         self.__aprsis_passcode = aprsis_passcode
         self.__aprsis_filter = aprsis_filter
+        self.__aprsis_msgno = aprsis_msgno
         self.__ais = None
         self.__aprs_packet = None
 
@@ -104,6 +111,10 @@ class AprsLibrary:
     @property
     def aprsis_filter(self):
         return self.__aprsis_filter
+
+    @property
+    def aprsis_msgno(self):
+        return self.__aprsis_msgno
 
     @property
     def ais(self):
@@ -157,6 +168,14 @@ class AprsLibrary:
                 raise ValueError("Invalid APRS-IS server filter string")
         self.__aprsis_filter = aprsis_filter
 
+    @aprsis_msgno.setter
+    def aprsis_msgno(self, aprsis_msgno: int):
+        if type(aprsis_msgno) != type(int()):
+            raise ValueError(
+                "This function only accepts numeric values for the APRS-IS MsgNo"
+            )
+        self.__aprsis_msgno = aprsis_msgno
+
     @ais.setter
     def ais(self, ais: object):
         # Value can be "None" if we reset the connection. Therefore,
@@ -192,6 +211,14 @@ class AprsLibrary:
     def get_aprsis_filter(self):
         return self.aprsis_filter
 
+    @keyword("Get APRS-IS MsgNo")
+    def get_aprsis_msgno(self):
+        return self.aprsis_msgno
+
+    @keyword("Get APRS-IS MsgNo As Alphanumeric Value")
+    def get_aprsis_msgno_alpha(self):
+        return get_alphanumeric_counter_value(self.aprsis_msgno)
+
     #
     # Robot-specific "setter" keywords
     #
@@ -219,6 +246,29 @@ class AprsLibrary:
     def set_aprsis_filter(self, aprsis_filter: str = None):
         logger.debug(msg="Setting custom filter value")
         self.aprsis_filter = aprsis_filter
+
+    @keyword("Set APRS-IS MsgNo")
+    def set_aprsis_msgno(self, aprsis_msgno: int = None):
+        logger.debug(msg="Setting custom msgno value")
+        self.aprsis_msgno = aprsis_msgno
+
+    @keyword("Increment APRS-IS MsgNo")
+    def increment_aprsis_msgno(self):
+        logger.debug(msg="Incrementing APRS-IS message number")
+        a = self.aprsis_msgno
+        self.aprsis_msgno = a + 1
+
+        # The message counter needs to support both old and new formats
+        # old format = 5 digits, numeric 00000...99999
+        # new format = 2 characters, alpha AA...ZZ
+        # ZZ equals 675 which means that we will reset the counter once
+        # that threshold has been reached
+        if self.aprsis_msgno > self.MAX_MSGNO_BOUNDARY:
+            logger.debug(
+                msg=f"MsgNo exceeds max threshold of {self.MAX_MSGNO_BOUNDARY}; resetting value to zero"
+            )
+            self.aprsis_msgno = 0
+        return self.get_aprsis_msgno()
 
     # This is the APRS library's callback function which will receive
     # content from APRS-IS. Dependent on the user's selection parameters,
@@ -352,11 +402,11 @@ class AprsLibrary:
         return self.aprs_packet
 
     # Getter methods for the APRS message(s), mainly targeting APRS 'message' types
-    # You can call the generic method get_value_from_aprs_message along with your 
+    # You can call the generic method get_value_from_aprs_message along with your
     # key in order to retrieve its value if your attribute is not listed here
     # If the given key does not exist, an exception will be thrown
     #
-    # All keywords can process raw (byte-format or str-format) as well as 
+    # All keywords can process raw (byte-format or str-format) as well as
     # processed APRS messages (which exist as dict objects)
     @keyword("Get Format Value from APRS Packet")
     def get_message_format(self, aprs_packet):
@@ -378,9 +428,7 @@ class AprsLibrary:
 
     @keyword("Get To Value from APRS Packet")
     def get_message_to(self, aprs_packet):
-        return self.get_value_from_aprs_packet(
-            aprs_packet=aprs_packet, field_name="to"
-        )
+        return self.get_value_from_aprs_packet(aprs_packet=aprs_packet, field_name="to")
 
     @keyword("Get Message Text Value from APRS Packet")
     def get_message_text(self, aprs_packet):
@@ -434,11 +482,11 @@ class AprsLibrary:
                 )
 
     # Check methods for the APRS message(s), mainly targeting APRS 'message' types
-    # You can call the generic method check_if_field_exists_in_packet along with your 
+    # You can call the generic method check_if_field_exists_in_packet along with your
     # key in order to retrieve its value if your attribute is not listed here
     # All functions return True value if the key exist - otherwise, the result is False
     #
-    # All keywords can process raw (byte-format or str-format) as well as 
+    # All keywords can process raw (byte-format or str-format) as well as
     # processed APRS messages (which exist as dict objects)
 
     @keyword("APRS Packet Should Contain Format")
@@ -507,6 +555,32 @@ class AprsLibrary:
             return True if field_name in aprs_packet else False
 
 
+#
+# Internal functions that are not to be called by Robot keywords
+#
+
+
+def get_alphanumeric_counter_value(numeric_counter: int):
+    """
+    Calculates the alphanumeric two-character APRS-IS message counter
+    based on the numeric value
+
+    Parameters
+    ==========
+    numeric_counter: 'int'
+        numeric counter that is used for calculating the start value
+
+    Returns
+    =======
+    alphanumeric_counter: 'str'
+        alphanumeric counter that is based on the numeric counter
+    """
+    first_char = int(numeric_counter / 26)
+    second_char = int(numeric_counter % 26)
+    alphanumeric_counter = chr(first_char + 65) + chr(second_char + 65)
+    return alphanumeric_counter
+
+
 if __name__ == "__main__":
     mytest = AprsLibrary()
     passcode = mytest.calculate_aprsis_passcode("DF1JSL-15")
@@ -515,8 +589,13 @@ if __name__ == "__main__":
     mytest.set_aprsis_passcode(passcode)
     mytest.set_aprsis_filter("g/MPAD/DF1JSL*")
 
-    print(mytest.connect_aprsis())
-    print(mytest.get_aprs_configuration())
-    print(mytest.send_aprs_packet(r"DF1JSL-15>APRS::WXBOT    :sunday"))
-    print(mytest.receive_aprs_packet())
-    mytest.disconnect_aprsis()
+    #    print(mytest.connect_aprsis())
+    #    print(mytest.get_aprs_configuration())
+    #    print(mytest.send_aprs_packet(r"DF1JSL-15>APRS::WXBOT    :sunday"))
+    #    print(mytest.receive_aprs_packet())
+    #    mytest.disconnect_aprsis()
+
+    print(mytest.get_aprsis_msgno())
+    print(mytest.get_aprsis_msgno_alpha())
+    print(mytest.increment_aprsis_msgno())
+    print(mytest.get_aprsis_msgno_alpha())
