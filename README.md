@@ -159,8 +159,14 @@ You can either specify all parameters during the initial setup of the library or
 |``APRS Packet Should Contain``|called by the aporementioned ``APRS Packet Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
 
 ## Known issues
+
 - When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
+  
 - Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less.
+  
+- The current version of the Robot Framework does not support WHILE loops which would permit the Robot script to rum endlessly (when needed). Loops can only be triggered with the help of finite FOR loops. This should be enough for testing but unless a real WHILE loop is made available for the Robot Framework, you can't build an APRS messaging server which will not terminate after a certain point in time.
+
+- The ```Receive APRS Packet``` command has no timeout. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
 
 ## The fine print
 
