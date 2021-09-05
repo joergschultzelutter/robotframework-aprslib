@@ -7,11 +7,11 @@
 
 ### Send a single packet to APRS-IS and wait for the response
 
-    # Send a single message to WXBOt, wait for a response message and display it on the console. 
+    # Send a single message to WXBOT, wait for a response message and display it on the console. 
     # Then terminate the test.
     #
     # Author: Joerg Schultze-Lutter, DF1JSL
-    # https://www.github.com/joergschultzelutter
+    # https://www.github.com/joergschultzelutter/robotframework-aprslib
 
     *** Settings ***
     Library                     AprsLibrary.py
@@ -20,9 +20,15 @@
     Suite Teardown              Close APRS-IS Connection
 
     *** Variables ***
-    ${callsign}                 DF1JSL-15
-    ${message}                  ${callsign}>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:sunday
-    ${filter}                   g/MPAD/DF1JSL*
+ 
+    # This is your APRS-IS call sign. Replace this place holder with your personal call sign
+    ${callsign}                 YOURCALLSIGN
+ 
+    # This is the message that we will send out to WXBOT
+    ${message}                  ${callsign}>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:tomorrow
+ 
+    # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx.
+    ${filter}                   g/WXBOT/${callsign}*
 
     *** Test Cases ***
     Send packet to APRS-IS with callsign ${callsign}
@@ -54,7 +60,7 @@
     # This is a simple robot which captures up to 10 APRS 'message' type messages and 
     # logs their raw messages to the console. Then terminate the test
     # Author: Joerg Schultze-Lutter, DF1JSL
-    # https://www.github.com/joergschultzelutter
+    # https://www.github.com/joergschultzelutter/robotframework-aprslib
 
     *** Settings ***
     Library                     AprsLibrary.py
@@ -63,7 +69,10 @@
     Suite Teardown              Close APRS-IS Connection
 
     *** Variables ***
-    ${callsign}                 DF1JSL-15
+    # This is your APRS-IS call sign. Replace this value with your personal call sign
+    ${callsign}                 YOURCALLSIGN
+
+    # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx
     ${filter}                   t/m
 
     *** Test Cases ***
@@ -116,9 +125,7 @@ This default set of values will allow you to establish a read-only connection to
 
 You can either specify all parameters during the initial setup of the library or alternatively via separate keywords
 
-### Define the parameters as part of the library definition
-
-#### Option 1 - as position parameters
+### Option 1 - set as position parameters
 
     *** Settings ***
 
@@ -127,7 +134,7 @@ You can either specify all parameters during the initial setup of the library or
     *** Test Cases ***
     My first test case
 
-#### Option 2 - as named parameters
+### Option 2 - set as named parameters
 
     *** Settings ***
 
@@ -136,7 +143,7 @@ You can either specify all parameters during the initial setup of the library or
     *** Test Cases ***
     My first test case
 
-### Use Robot Keywords
+### Option 3 - Use Robot Keywords
 
 | Keyword|Description|
 |------- |-----------|

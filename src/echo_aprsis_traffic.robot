@@ -1,7 +1,7 @@
 # This is a simple robot which captures up to 10 APRS 'message' type messages and 
 # logs their raw messages to the console. Then terminate the test
 # Author: Joerg Schultze-Lutter, DF1JSL
-# https://www.github.com/joergschultzelutter
+# https://www.github.com/joergschultzelutter/robotframework/aprslib
 
 *** Settings ***
 Library						AprsLibrary.py
@@ -10,7 +10,10 @@ Suite Setup					Open APRS-IS Connection
 Suite Teardown				Close APRS-IS Connection
 
 *** Variables ***
-${callsign}					DF1JSL-15
+# This is your APRS-IS call sign. Replace this value with your personal call sign
+${callsign}					YOURCALLSIGN
+
+# APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx
 ${filter}					t/m
 
 *** Test Cases ***
