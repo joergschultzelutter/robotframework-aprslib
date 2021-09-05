@@ -334,11 +334,15 @@ class AprsLibrary:
         # Finally, connect to APRS-IS
         self.ais.connect(blocking=True)
 
+        # Are we connected? If not, then properly destroy what we 
+        # may have gathered as data and raise an error
         if not self.ais._connected:
             disconnect_aprsis(self)
             raise ConnectionError(
                 f"Cannot connect to APRS-IS with server {self.aprsis_server} port {self.aprsis_port} callsign {self.aprsis_callsign}"
             )
+
+        # Yay - we made it. Return the object to the user.
         logger.debug(msg="Successfully connected to APRS-IS")
         return self.ais
 
@@ -364,24 +368,25 @@ class AprsLibrary:
         }
         return myvalues
 
+    # Send an APRS-packet to APRS-IS. There is no sanity check
+    # on the data provided to this function - everything
+    # is sent 'as is'
     @keyword("Send APRS Packet")
-    def send_aprs_packet(self, packet: str, simulate_send: bool = False):
-        if not simulate_send:
-            # Are we connected?
-            if not self.ais:
-                raise ConnectionError("Not connected to APRS-IS; cannot send packet")
-            logger.debug(msg=f"Sending message '{packet}' to APRS-IS")
+    def send_aprs_packet(self, packet: str):
+        # Are we connected?
+        if not self.ais:
+            raise ConnectionError("Not connected to APRS-IS; cannot send packet")
+        
+        # We seem to be connected
+        logger.debug(msg=f"Sending message '{packet}' to APRS-IS")
 
-            # Try to send data to the socket
-            try:
-                self.ais.sendall(packet)
-            except:
-                raise ConnectionError(
-                    f"Error while sending message '{packet}' to APRS-IS"
-                )
-        else:
-            # just pretend that we send something to the socket
-            logger.debug(msg=f"Simulate message 'Send' of message '{packet}'")
+        # Try to send data to the socket
+        try:
+            self.ais.sendall(packet)
+        except:
+            raise ConnectionError(
+                f"Error while sending message '{packet}' to APRS-IS"
+            )
 
     @keyword("Receive APRS Packet")
     def receive_aprs_packet(self, immortal: bool = True, raw: bool = False):
@@ -454,6 +459,12 @@ class AprsLibrary:
             aprs_packet=aprs_packet, field_name="msgNo"
         )
 
+    # This is the core function which will extract the requested
+    # field name from our packet(s). The packet can either be in 
+    # raw format (str or bytes) OR decoded. If you try to access
+    # a field that does not exist, this function will raise
+    # an exception. Use the "check ..." methods if you want to
+    # find out if a field exists or not.
     @keyword("Get Value From APRS Packet")
     def get_value_from_aprs_packet(self, aprs_packet, field_name):
         t_dict = type(dict())
@@ -537,6 +548,9 @@ class AprsLibrary:
             aprs_packet=aprs_packet, field_name="msgNo"
         )
 
+    # This is the core function which will check if a field exists
+    # in our packet(s). The packet can either be in 
+    # raw format (str or bytes) OR decoded. 
     @keyword("APRS Message should contain")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
         t_dict = type(dict())
@@ -556,10 +570,8 @@ class AprsLibrary:
 
 
 #
-# Internal functions that are not to be called by Robot keywords
+# Internal functions that are not to be called as Robot keywords
 #
-
-
 def get_alphanumeric_counter_value(numeric_counter: int):
     """
     Calculates the alphanumeric two-character APRS-IS message counter

@@ -163,7 +163,7 @@ You can either specify all parameters during the initial setup of the library or
 |``Parse APRS Packet``|Parses the given APRS packet. In case the packet is either invalid or its format is unknown, an exception will be triggered|``aprs_packet``|
 |``Connect to APRS-IS``|Establishes a socket connection to the APRS-IS network| |
 |``Disconnect from APRS-IS``|Disconnects from the APRS-IS network| |
-|``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` and ``simulate_send`` (bool)|
+|``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` (string)|
 |``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established. The default setting uses the parameter values ``immortal`` = ``True`` and ``raw``= ``False``, meaning that aprslib will try to re-establish the connection in case it is lost and will also auto-decode APRS packets when received|``immortal`` and ``raw`` (both boolean params)|
 |``Get <field name> Value from APRS Packet``|various wrappers; e.g. ``Get Message Text Value From APRS Packet`` will return the decoded message string if it is present in the message|``aprs_packet``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
 |``Get Value From APRS Packet``|called by the aporementioned ``Get <field name> Value fron APRS Packet`` functions |``aprs_packet`` and ``field_name``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
