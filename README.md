@@ -153,16 +153,16 @@ You can either specify all parameters during the initial setup of the library or
 |``Disconnect from APRS-IS``|Disconnects from the APRS-IS network| |
 |``Send APRS Packet``|Sends a raw APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``packet`` and ``simulate_send`` (bool)|
 |``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established|``immortal`` and ``raw`` (both bool params)|
-|``Get <field name> Value from APRS Packet``|various wrappers; e.g. ``Get Message Text Value From APRS Packet`` will return the decoded message string if it is present in the message|``aprs_packet``. If you specify a field that does not exit in the packet, this keyword will cause an error. Raw and decoded messages are supported.|
-|``Get Value From APRS Packet``|called by the aporementioned ``Get <field name> Value fron APRS Packet`` functions |``aprs_packet`` and ``field_name``. Raw and decoded messages are supported.|
+|``Get <field name> Value from APRS Packet``|various wrappers; e.g. ``Get Message Text Value From APRS Packet`` will return the decoded message string if it is present in the message|``aprs_packet``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
+|``Get Value From APRS Packet``|called by the aporementioned ``Get <field name> Value fron APRS Packet`` functions |``aprs_packet`` and ``field_name``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
 |``APRS Packet Should Contain <field name>``|Similar to ``Get <field name> Value From APRS Packet`` but only returns ``True``/``False`` in case the field does / does not exit|``aprs_packet`` and ``field_name``.  Raw and decoded messages are supported.|
-|``APRS Packet Should Contain``|called by the aporementioned ``APRS Packet Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
+|``APRS Packet Should Contain``|called by the aforementioned ``APRS Packet Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
 
 ## Known issues
 
 - When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
   
-- Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less.
+- Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less. As aprslib does not [support the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt), this keyword library will also not decode these messages in a proper way and you may need to decode them manually. I was thinking about introducing a workaround to this library (the one that [mpad](https://github.com/joergschultzelutter/mpad) uses), but in the end this decoding should rather be done by aprslib itself.
   
 - The current version of the Robot Framework does not support WHILE loops which would permit the Robot script to rum endlessly (when needed). Loops can only be triggered with the help of finite FOR loops. This should be enough for testing but unless a real WHILE loop is made available for the Robot Framework, you can't build an APRS messaging server which will not terminate after a certain point in time.
 
