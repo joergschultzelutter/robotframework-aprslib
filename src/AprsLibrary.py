@@ -50,7 +50,7 @@ class AprsLibrary:
     DEFAULT_CALLSIGN = "N0CALL"
     DEFAULT_PASSCODE = "-1"
     DEFAULT_FILTER = ""
-    DEFAULT_APRS_MSGNO = 675
+    DEFAULT_APRS_MSGNO = 0
 
     # Class-internal APRS-IS connection parameters
     __aprsis_server = None

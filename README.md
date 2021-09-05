@@ -102,15 +102,17 @@
 ## Default settings when creating new APRS-IS connection
 
 When you initialize an APRS connection without explicitly setting parameters such as server, port, user/pass and filter, the following default values are automatically applied:
+
 - __server__ = ``euro.aprs2.net``
 - __port__ = ``14580``
 - __callsign__ = ``N0CALL``
 - __passcode__ = ``-1``
 - __aprs-is filter__ = not set
+- __aprsis_msgno__ = ``0`` (this is equal to ``AA`` if you need to get the msgno in alphanumeric format)
 
 This default set of values will allow you to establish a read-only connection to APRS-IS, assuming that the respective APRS-IS server that you intend to connect with permits such a connection.
 
-## Change the server / port / ...
+## Change the server / port / etc
 
 You can either specify all parameters during the initial setup of the library or alternatively via separate keywords
 
@@ -120,7 +122,7 @@ You can either specify all parameters during the initial setup of the library or
 
     *** Settings ***
 
-    Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  filter_value
+    Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  filter_value  message_value
 
     *** Test Cases ***
     My first test case
@@ -129,12 +131,13 @@ You can either specify all parameters during the initial setup of the library or
 
     *** Settings ***
 
-    Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value
+    Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value aprsis_msgno = msgno_value
 
     *** Test Cases ***
     My first test case
 
 ### Use Robot Keywords
+
 | Keyword|Description|
 |------- |-----------|
 |``Set APRS-IS Server`` and ``Get APRS-IS Server``|Sets/Gets the APRS-IS server|
@@ -143,8 +146,10 @@ You can either specify all parameters during the initial setup of the library or
 |``Set APRS-IS Passcode`` and ``Get APRS-IS Passcode``|Sets/Gets the APRS-IS passcode|
 |``Set APRS-IS Filter`` and ``Get APRS-IS Filter``|Sets/Gets the APRS-IS server filter. Note: This keyword performs a (basic) sanity check on the content and will cause an error in case an invalid filter qualifier has been submitted|
 |``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user (basically a collection of all previously mentioned keywords). An AIS object whose value is different to ```None``` indicates an active connection.|
+|``Get APRS-IS MsgNo``, ``Set APRS-IS MsgNo``, ``Increment APRS-IS MsgNo`` and ``Get APRS-IS MsgNo as Alphanumeric``| Gets and sets the MsgNo. The ``alphanumeric`` keyword provides the message number in a format which [supports the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt). The following rules apply: a) If you want to set the value directly, a max value of 675 (equals ``ZZ``) is possible b) Setter methods only accept numeric values c) if you use the  ``Increment`` keyword, an increment to the value of 675 (``ZZ``) will automatically reset the value to ``AA``.
 
 ## Other Robot Keywords supported by this library
+
 | Keyword|Description|Parameter|
 |------- |-----------|--|
 |``Calculate APRS-IS Passcode``|Calculates the APRS-IS passcode (based on the given call sign) and returns it to the user|``aprsis_callsign``|
@@ -166,7 +171,7 @@ You can either specify all parameters during the initial setup of the library or
   
 - The current version of the Robot Framework does not support WHILE loops which would permit the Robot script to rum endlessly (when needed). Loops can only be triggered with the help of finite FOR loops. This should be enough for testing but unless a real WHILE loop is made available for the Robot Framework, you can't build an APRS messaging server which will not terminate after a certain point in time.
 
-- The ```Receive APRS Packet``` command has no timeout. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
+- The ```Receive APRS Packet``` command has no timeout which means that it will only return back from this code if it has found a message that is to be returned back to Robot. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
 
 ## The fine print
 
