@@ -334,7 +334,7 @@ class AprsLibrary:
         # Finally, connect to APRS-IS
         self.ais.connect(blocking=True)
 
-        # Are we connected? If not, then properly destroy what we 
+        # Are we connected? If not, then properly destroy what we
         # may have gathered as data and raise an error
         if not self.ais._connected:
             disconnect_aprsis(self)
@@ -376,7 +376,7 @@ class AprsLibrary:
         # Are we connected?
         if not self.ais:
             raise ConnectionError("Not connected to APRS-IS; cannot send packet")
-        
+
         # We seem to be connected
         logger.debug(msg=f"Sending message '{packet}' to APRS-IS")
 
@@ -384,9 +384,7 @@ class AprsLibrary:
         try:
             self.ais.sendall(packet)
         except:
-            raise ConnectionError(
-                f"Error while sending message '{packet}' to APRS-IS"
-            )
+            raise ConnectionError(f"Error while sending message '{packet}' to APRS-IS")
 
     @keyword("Receive APRS Packet")
     def receive_aprs_packet(self, immortal: bool = True, raw: bool = False):
@@ -460,7 +458,7 @@ class AprsLibrary:
         )
 
     # This is the core function which will extract the requested
-    # field name from our packet(s). The packet can either be in 
+    # field name from our packet(s). The packet can either be in
     # raw format (str or bytes) OR decoded. If you try to access
     # a field that does not exist, this function will raise
     # an exception. Use the "check ..." methods if you want to
@@ -549,8 +547,8 @@ class AprsLibrary:
         )
 
     # This is the core function which will check if a field exists
-    # in our packet(s). The packet can either be in 
-    # raw format (str or bytes) OR decoded. 
+    # in our packet(s). The packet can either be in
+    # raw format (str or bytes) OR decoded.
     @keyword("APRS Message should contain")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
         t_dict = type(dict())
