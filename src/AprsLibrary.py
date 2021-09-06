@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.1"
+__version__ = "0.2"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -255,9 +255,7 @@ class AprsLibrary:
     @keyword("Increment APRS-IS MsgNo")
     def increment_aprsis_msgno(self):
         logger.debug(msg="Incrementing APRS-IS message number")
-        a = self.aprsis_msgno
-        self.aprsis_msgno = a + 1
-
+        self.aprsis_msgno = self.aprsis_msgno + 1
         # The message counter needs to support both old and new formats
         # old format = 5 digits, numeric 00000...99999
         # new format = 2 characters, alpha AA...ZZ

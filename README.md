@@ -27,7 +27,7 @@
     # This is the message that we will send out to WXBOT
     ${message}                  ${callsign}>APRS::WXBOT${SPACE}${SPACE}${SPACE}${SPACE}:tomorrow
  
-    # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx.
+    # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx
     ${filter}                   g/WXBOT/${callsign}*
 
     *** Test Cases ***
