@@ -3,7 +3,7 @@
 
 ```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows licensed ham radio operators to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
 
-## Default settings when creating new APRS-IS connection
+## Default settings for a new APRS-IS connection
 
 When you initialize an APRS connection without explicitly setting parameters such as server, port, user/pass and filter, the following default values are automatically applied:
 
