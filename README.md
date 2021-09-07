@@ -243,7 +243,7 @@ Receive packet from APRS-IS
     #
     # Therefore, I don't care about this case and simply expect to receive a message with a
     # msgno present. Additionally, keep in mind that alphanumeric message number qualifiers
-    # are currently not parsed by the aprslib library. For simpllicity reas
+    # are currently not parsed by the aprslib library.
     ${msgno_string}=        Get Message Number Value From APRS Packet   ${packet}
 
     # If we have received an ack or a rej, we simply ignore the message and start anew
