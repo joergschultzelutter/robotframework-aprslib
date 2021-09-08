@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __author__ = "Joerg Schultze-Lutter"
 
 
