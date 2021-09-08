@@ -52,7 +52,7 @@ My first test case
 |``Set APRS-IS Passcode`` and ``Get APRS-IS Passcode``|Sets/Gets the APRS-IS passcode|
 |``Set APRS-IS Filter`` and ``Get APRS-IS Filter``|Sets/Gets the APRS-IS server filter. Note: This keyword performs a (basic) sanity check on the content and will cause an error in case an invalid filter qualifier has been submitted|
 |``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user (basically a collection of all previously mentioned keywords). An AIS object whose value is different to ```None``` indicates an active connection.|
-|``Get APRS MsgNo``, ``Set APRS MsgNo``, ``Increment APRS MsgNo`` and ``Get APRS-IS MsgNo as Alphanumeric``| Gets and sets the MsgNo. The ``alphanumeric`` keyword provides the message number in a format which [supports the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt). The following rules apply: a) If you want to set the value directly, a max value of 675 (equals ``ZZ``) is possible b) Setter methods only accept numeric values c) if you use the  ``Increment`` keyword, an increment to the value of 675 (``ZZ``) will automatically reset the value to ``AA``. ``Get APRS MsgNo`` does NOT automatically increment the message number.|
+
 
 ## Other Robot Keywords supported by this library
 
@@ -68,6 +68,7 @@ My first test case
 |``Get Value From APRS Packet``|called by the aporementioned ``Get <field name> Value fron APRS Packet`` functions |``aprs_packet`` and ``field_name``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
 |``APRS Packet Should Contain <field name>``|Similar to ``Get <field name> Value From APRS Packet`` but only returns ``True``/``False`` in case the field does / does not exit|``aprs_packet`` and ``field_name``.  Raw and decoded messages are supported.|
 |``APRS Packet Should Contain``|called by the aforementioned ``APRS Packet Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
+|``Get APRS MsgNo``, ``Set APRS MsgNo``, ``Increment APRS MsgNo`` and ``Get APRS-IS MsgNo as Alphanumeric``| Gets and sets the MsgNo that you can use for building up your own messages (aka library-maintained counter value). The ``alphanumeric`` keyword provides the message number in a format which [supports the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt). An ``increment`` to the value of 675 (``ZZ``) will automatically reset the value to ``AA``. ``Get APRS MsgNo`` does NOT automatically increment the message number.|``Set APRS MsgNo`` allows you to set a numeric value between 0 and 675 (equals ``AA`` to ``ZZ``).|
 
 ## Known issues
 
