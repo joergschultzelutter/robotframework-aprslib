@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -463,11 +463,7 @@ class AprsLibrary:
     # find out if a field exists or not.
     @keyword("Get Value From APRS Packet")
     def get_value_from_aprs_packet(self, aprs_packet, field_name):
-        t_dict = type(dict())
-        t_str = type(str())
-        t_byte = type(bytes())
-
-        valid_message_types = [t_dict, t_str, t_byte]
+        valid_message_types = [type(dict), type(str), type(byte)]
         if type(aprs_packet) not in valid_message_types:
             raise TypeError("This does not look like a valid APRS message type")
 
@@ -496,49 +492,49 @@ class AprsLibrary:
     # All keywords can process raw (byte-format or str-format) as well as
     # processed APRS messages (which exist as dict objects)
 
-    @keyword("APRS Packet Should Contain Format")
+    @keyword("Check If APRS Packet Contains Format")
     def check_packet_format(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="format"
         )
 
-    @keyword("APRS Message Should Contain Raw Message")
+    @keyword("Check If APRS Packet Contains Raw Message")
     def check_packet_raw(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="raw"
         )
 
-    @keyword("APRS Message Should Contain From")
+    @keyword("Check If APRS Packet Contains From")
     def check_packet_from(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="from"
         )
 
-    @keyword("APRS Message Should Contain To")
+    @keyword("Check If APRS Packet Contains To")
     def check_packet_to(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="to"
         )
 
-    @keyword("APRS Message Should Contain Message Text")
+    @keyword("Check If APRS Packet Contains Message Text")
     def check_packet_text(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="message_text"
         )
 
-    @keyword("APRS Message Should Contain Response")
+    @keyword("Check If APRS Packet Contains Response")
     def check_packet_response(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="response"
         )
 
-    @keyword("APRS Message Should Contain Adresse")
+    @keyword("Check If APRS Packet Contains Adresse")
     def check_packet_addresse(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="addresse"
         )
 
-    @keyword("APRS Message Should Contain Message Number")
+    @keyword("Check If APRS Packet Contains Message Number")
     def check_packet_msgno(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="msgNo"
@@ -547,13 +543,9 @@ class AprsLibrary:
     # This is the core function which will check if a field exists
     # in our packet(s). The packet can either be in
     # raw format (str or bytes) OR decoded.
-    @keyword("APRS Message should contain")
+    @keyword("Check If APRS Packet Contains")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
-        t_dict = type(dict())
-        t_str = type(str())
-        t_byte = type(bytes())
-
-        valid_message_types = [t_dict, t_str, t_byte]
+        valid_message_types = [type(dict), type(str), type(byte)]
         if type(aprs_packet) not in valid_message_types:
             raise TypeError("This does not look like a valid APRS message type")
 

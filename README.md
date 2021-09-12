@@ -1,7 +1,7 @@
 # robotframework-aprslib
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows licensed ham radio operators to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
+```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows __licensed ham radio operators__ to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
 
 ## Default settings for a new APRS-IS connection
 
@@ -66,8 +66,8 @@ My first test case
 |``Receive APRS Packet``|Receives an APRS packet to APRS-IS in case an open connection to the APRS-IS network has been established. The default setting uses the parameter values ``immortal`` = ``True`` and ``raw``= ``False``, meaning that aprslib will try to re-establish the connection in case it is lost and will also auto-decode APRS packets when received|``immortal`` and ``raw`` (both boolean params)|
 |``Get <field name> Value from APRS Packet``|various wrappers; e.g. ``Get Message Text Value From APRS Packet`` will return the decoded message string if it is present in the message|``aprs_packet``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
 |``Get Value From APRS Packet``|called by the aporementioned ``Get <field name> Value fron APRS Packet`` functions |``aprs_packet`` and ``field_name``. If you specify a field that does not exit in the packet, this keyword will cause an error. Both raw and decoded messages are supported.|
-|``APRS Packet Should Contain <field name>``|Similar to ``Get <field name> Value From APRS Packet`` but only returns ``True``/``False`` in case the field does / does not exit|``aprs_packet`` and ``field_name``.  Raw and decoded messages are supported.|
-|``APRS Packet Should Contain``|called by the aforementioned ``APRS Packet Should Contain <field name>`` functions |``aprs_packet`` and ``field_name``|
+|``Check If APRS Packet Contains <field name>``|Similar to ``Get <field name> Value From APRS Packet`` but returns ``True``/``False`` in case the field does / does not exit|``aprs_packet`` and ``field_name``.  Both raw and decoded messages are supported.|
+|``Check If APRS Packet Contains``|called by the aforementioned ``Check If APRS Packet Contains <field name>`` functions |``aprs_packet`` and ``field_name``|
 |``Get APRS MsgNo``, ``Set APRS MsgNo``, ``Increment APRS MsgNo`` and ``Get APRS MsgNo as Alphanumeric``| Gets and sets the MsgNo that you can use for building up your own messages (aka library-maintained counter value). The ``alphanumeric`` keyword provides the message number in a format which [supports the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt). An ``increment`` to the value of ``675`` (``ZZ``) will automatically reset the value to ``0`` (``AA``). ``Get APRS MsgNo`` does NOT automatically increment the message number.|``Set APRS MsgNo`` allows you to set a numeric value between 0 and 675 (equals ``AA`` to ``ZZ``). All other keywords have no parameters.|
 
 ## Known issues
