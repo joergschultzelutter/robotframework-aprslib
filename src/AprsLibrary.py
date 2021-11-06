@@ -19,7 +19,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-
 from robot.api.deco import library, keyword
 from robot.api.logger import librarylogger as logger
 import aprslib
@@ -31,7 +30,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.3.3"
+__version__ = "0.4.0"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -463,11 +462,14 @@ class AprsLibrary:
     # find out if a field exists or not.
     @keyword("Get Value From APRS Packet")
     def get_value_from_aprs_packet(self, aprs_packet, field_name):
-        valid_message_types = [type(dict), type(str), type(byte)]
-        if type(aprs_packet) not in valid_message_types:
-            raise TypeError("This does not look like a valid APRS message type")
+        t_str = type("")
+        t_dict = type({})
+        t_bytes = type(b'')
 
-        if type(aprs_packet) == t_str or type(aprs_packet) == t_byte:
+        if type(aprs_packet) not in [t_str, t_dict, t_bytes]:
+            raise TypeError(f"This packet does not look like a valid APRS message type: {type(aprs_packet)}")
+
+        if type(aprs_packet) == t_str or type(aprs_packet) == t_bytes:
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
             if type(packet) == t_dict:
                 if field_name in packet:
@@ -545,11 +547,14 @@ class AprsLibrary:
     # raw format (str or bytes) OR decoded.
     @keyword("Check If APRS Packet Contains")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
-        valid_message_types = [type(dict), type(str), type(byte)]
-        if type(aprs_packet) not in valid_message_types:
+        t_str = type("")
+        t_dict = type({})
+        t_bytes = type(b'')
+
+        if type(aprs_packet) not in [t_str, t_dict, t_bytes]:
             raise TypeError("This does not look like a valid APRS message type")
 
-        if type(aprs_packet) == t_str or type(aprs_packet) == t_byte:
+        if type(aprs_packet) == t_str or type(aprs_packet) == t_bytes:
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
             if type(packet) == t_dict:
                 return True if field_name in packet else False
