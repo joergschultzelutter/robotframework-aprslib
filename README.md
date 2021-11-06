@@ -3,7 +3,27 @@
 
 ```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows __licensed ham radio operators__ to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
 
-## Default settings for a new APRS-IS connection
+## Installation
+
+- clone repository
+- ``pip install -r dependencies.txt``
+
+## Robot Framework Library Examples
+
+In order to run these scripts, you need to change them and add your call sign to the script's configuration section:
+
+    # This is your APRS-IS call sign. Replace this place holder with your personal call sign
+    ${callsign}                 YOURCALLSIGN
+
+Replace the current placeholder with your call sign and you are good to go.
+
+- [Echo incoming APRS messages](src/echo_aprsis_traffic.robot)
+- [Send and receive a single APRS message](src/send_and_receive_single_packet.robot)
+- [Receive a message, acknowledge it if necessary and then respond to it](src/receive_and_send_single_packet.robot)
+
+## Library usage and supported keywords
+
+### Default settings for a new APRS-IS connection via robotframework-aprslib
 
 When you initialize an APRS connection without explicitly setting parameters such as server, port, user/pass and filter, the following default values are automatically applied:
 
@@ -16,11 +36,11 @@ When you initialize an APRS connection without explicitly setting parameters suc
 
 This default set of values will allow you to establish a read-only connection to APRS-IS, assuming that the respective APRS-IS server that you intend to connect with permits such a connection.
 
-## Change the server / port / etc
+### Change the server / port / etc
 
 You can either specify all parameters during the initial setup of the library or alternatively via separate keywords
 
-### Option 1 - set as position parameters
+#### Option 1 - set as position parameters
 
 ```robotframework
 *** Settings ***
@@ -31,7 +51,7 @@ Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  f
 My first test case
 ```
 
-### Option 2 - set as named parameters
+#### Option 2 - set as named parameters
 
 ```robotframework
 *** Settings ***
@@ -42,7 +62,7 @@ Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  apr
 My first test case
 ```
 
-### Option 3 - Use Robot Keywords
+#### Option 3 - Use Robot Keywords
 
 | Keyword|Description|
 |------- |-----------|
@@ -54,7 +74,7 @@ My first test case
 |``Get Current APRS-IS Configuration``|Returns a dictionary containing all previously listed parameters and the APRS-IS connection status to the user (basically a collection of all previously mentioned keywords). An AIS object whose value is different to ```None``` indicates an active connection.|
 
 
-## Other Robot Keywords supported by this library
+### Other Robot Keywords supported by this library
 
 | Keyword|Description|Parameter|
 |------- |-----------|--|
@@ -81,19 +101,6 @@ My first test case
 - The ```Receive APRS Packet``` keyword has no timeout which means that it will only return back from this code if it has found a message that is to be returned back to Robot. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
 
 - The keyword ``Send APRS Packet`` will __not__ check whether the APRS-IS connection has been establised read-only (``N0CALL`` call sign) or read-write.
-
-## Robot Framework Library Examples
-
-In order to run these scripts, you need to change them and add your call sign to the script's configuration section:
-
-    # This is your APRS-IS call sign. Replace this place holder with your personal call sign
-    ${callsign}                 YOURCALLSIGN
-
-Replace the current placeholder with your call sign and you are good to go.
-
-- [Echo incoming APRS messages](src/echo_aprsis_traffic.robot)
-- [Send and receive a single APRS message](src/send_and_receive_single_packet.robot)
-- [Receive a message, acknowledge it if necessary and then respond to it](src/receive_and_send_single_packet.robot)
 
 ## The fine print
 

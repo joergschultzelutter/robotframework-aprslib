@@ -1,0 +1,2 @@
+aprs-python>=0.6.47
+robotframework>=3.2
