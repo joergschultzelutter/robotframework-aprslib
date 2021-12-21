@@ -96,11 +96,11 @@ My first test case
 
 - When you need to define strings which contain multiple spaces, escaping these strings won't work as Robot will try to interpret these as list values. You need to construct them as Robot-conform strings with ``${SPACE}``. Example: ``ABCD${SPACE}${SPACE}${SPACE}${SPACE}EFGH`` results in ``ABCD____EFGH`` (four blanks between the variable's value).
   
-- Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less. As aprslib does not [support the more recent replyack scheme](http://www.aprs.org/aprs11/replyacks.txt), this keyword library will also not decode these messages in a proper way and you may need to decode them manually. I was thinking about introducing a workaround to this library (the one that [mpad](https://github.com/joergschultzelutter/mpad) uses), but in the end this decoding should rather be done by aprslib itself.
+- Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less.
   
 - The current version of the Robot Framework does not support WHILE loops (planned for RF 5.x) which would permit the Robot script to run endlessly (when needed). Loops can only be triggered with the help of finite FOR loops. This should be enough for testing but unless a real WHILE loop is made available for the Robot Framework, you can't build an APRS messaging server which will not terminate after a certain point in time.
 
-- The ```Receive APRS Packet``` keyword has no timeout which means that it will only return back from this code if it has found a message that is to be returned back to Robot. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
+- The ```Receive APRS Packet``` keyword has no timeout which means that it will only return from its code if it has found a message that is to be returned to Robot. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
 
 - The keyword ``Send APRS Packet`` will __not__ check whether the APRS-IS connection has been establised read-only (``N0CALL`` call sign) or read-write.
 

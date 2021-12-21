@@ -30,7 +30,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -454,6 +454,12 @@ class AprsLibrary:
             aprs_packet=aprs_packet, field_name="msgNo"
         )
 
+    @keyword("Get Ack Message Number Value from APRS Packet")
+    def get_ackmsgno(self, aprs_packet):
+        return self.get_value_from_aprs_packet(
+            aprs_packet=aprs_packet, field_name="ackMsgNo"
+        )
+
     # This is the core function which will extract the requested
     # field name from our packet(s). The packet can either be in
     # raw format (str or bytes) OR decoded. If you try to access
@@ -540,6 +546,12 @@ class AprsLibrary:
     def check_packet_msgno(self, aprs_packet):
         return self.check_if_field_exists_in_packet(
             aprs_packet=aprs_packet, field_name="msgNo"
+        )
+
+    @keyword("Check If APRS Packet Contains Ack Message Number")
+    def check_packet_ackmsgno(self, aprs_packet):
+        return self.check_if_field_exists_in_packet(
+            aprs_packet=aprs_packet, field_name="ackMsgNo"
         )
 
     # This is the core function which will check if a field exists

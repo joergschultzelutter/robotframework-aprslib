@@ -1,2 +1,2 @@
-aprs-python>=0.6.47
+aprslib>=0.7.0
 robotframework>=3.2
