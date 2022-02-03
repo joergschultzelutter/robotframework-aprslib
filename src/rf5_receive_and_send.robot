@@ -1,5 +1,5 @@
 # Receive a single message with msgno, send an ack and send a response to the user
-# This is a VERY simplified test which fails if you send unconfirmed 
+# This is a VERY simplified test which may fail if you send unconfirmed 
 # messages OR messages with the more modern ack/rej schema to it
 #
 # REQUIRES ROBOT FRAMEWORK 5.0 or greater
