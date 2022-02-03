@@ -22,6 +22,10 @@ Replace the current placeholder with your call sign and you are good to go.
 - [Echo incoming APRS messages](src/echo_aprsis_traffic.robot)
 - [Send and receive a single APRS message](src/send_and_receive_single_packet.robot)
 - [Receive a message, acknowledge it if necessary and then respond to it](src/receive_and_send_single_packet.robot)
+- [ROBOT FRAMEWORK 5: Echo incoming APRS messages](src/rf5_echo_aprsis_traffic.robot)
+- [ROBOT FRAMEWORK 5: Receive a message, acknowledge it if necessary and then respond to it](src/rf5_receive_and_send_single_packet.robot)
+
+The Robot Framework 5 examples use the new WHILE loop for an 'eternal' loop; all other code samples use finite FOR loops and will terminate after processing 10 records in a row
 
 ## Library usage and supported keywords
 
@@ -98,8 +102,6 @@ My first test case
   
 - Apart from minor helper methods for the connection setup and field check/retrieval, this Robot Framework library does not offer any additional keywords for exchanging data in a proper way. (Almost) every feature that the original [aprslib](https://github.com/rossengeorgiev/aprs-python) offers is supported by this Robot library - nothing more and nothing less.
   
-- The current version of the Robot Framework does not support WHILE loops (planned for RF 5.x) which would permit the Robot script to run endlessly (when needed). Loops can only be triggered with the help of finite FOR loops. This should be enough for testing but unless a real WHILE loop is made available for the Robot Framework, you can't build an APRS messaging server which will not terminate after a certain point in time.
-
 - The ```Receive APRS Packet``` keyword has no timeout which means that it will only return from its code if it has found a message that is to be returned to Robot. If you depend on timeout, you may need to amend your APRS-IS filter settings and handle the filter process in your code.
 
 - The keyword ``Send APRS Packet`` will __not__ check whether the APRS-IS connection has been establised read-only (``N0CALL`` call sign) or read-write.
