@@ -17,7 +17,7 @@ Suite Teardown					Close APRS-IS Connection
 *** Variables ***
 
 # This is your APRS-IS call sign. Replace this value with your personal call sign
-${callsign}					DF1JSL-10
+${callsign}					YOURCALLSIGN
 
 # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx
 ${filter}					g/${callsign}*
