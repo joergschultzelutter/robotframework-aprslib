@@ -30,7 +30,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -169,7 +169,7 @@ class AprsLibrary:
 
     @aprsis_msgno.setter
     def aprsis_msgno(self, aprsis_msgno: int):
-        if type(aprsis_msgno) != type(int()):
+        if not isinstance(aprsis_msgno,int):
             raise ValueError(
                 "This function only accepts numeric values for the APRS-IS MsgNo"
             )
@@ -468,16 +468,12 @@ class AprsLibrary:
     # find out if a field exists or not.
     @keyword("Get Value From APRS Packet")
     def get_value_from_aprs_packet(self, aprs_packet, field_name):
-        t_str = type("")
-        t_dict = type({})
-        t_bytes = type(b'')
-
-        if type(aprs_packet) not in [t_str, t_dict, t_bytes]:
+        if not isinstance(aprs_packet,(str, dict, bytes)):
             raise TypeError(f"This packet does not look like a valid APRS message type: {type(aprs_packet)}")
 
-        if type(aprs_packet) == t_str or type(aprs_packet) == t_bytes:
+        if isinstance(aprs_packet,(str, bytes)):
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
-            if type(packet) == t_dict:
+            if isinstance(packet,dict):
                 if field_name in packet:
                     return packet[field_name]
                 else:
@@ -559,16 +555,12 @@ class AprsLibrary:
     # raw format (str or bytes) OR decoded.
     @keyword("Check If APRS Packet Contains")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
-        t_str = type("")
-        t_dict = type({})
-        t_bytes = type(b'')
-
-        if type(aprs_packet) not in [t_str, t_dict, t_bytes]:
+        if not isinstance(aprs_packet,(str,dict,bytes)):
             raise TypeError("This does not look like a valid APRS message type")
 
-        if type(aprs_packet) == t_str or type(aprs_packet) == t_bytes:
+        if isinstance(aprs_packet,(str,bytes)):
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
-            if type(packet) == t_dict:
+            if isinstance(packet,dict):
                 return True if field_name in packet else False
         else:
             return True if field_name in aprs_packet else False
