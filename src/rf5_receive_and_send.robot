@@ -155,6 +155,11 @@ Send Packet to APRS-IS
 
 Open APRS-IS Connection
 	[Documentation]			Establishes a connection to APRS-IS
+	
+	# As this test suite uses RF5 keywords, check if we use the correct environment
+	# and abort if necessary
+	Check Robot Framework Version
+
 	${passcode}=			Calculate APRS-IS Passcode	${callsign}
 
 	Set APRS-IS Callsign		${callsign}
@@ -168,3 +173,15 @@ Close APRS-IS Connection
 	[Documentation]			Closes an existing connection to APRS-IS
 	Log				Disconnect from APRS-IS
 	Disconnect from APRS-IS
+	
+Check Robot Framework Version
+    [Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
+    # Get the version. Will be in x.x.x format, e.g. 4.1.2
+    ${ver}=		Evaluate  (robot.version.VERSION)
+
+    # Split up the string and get the major and minor versions, then convert the values to integer
+    ${words}=		Split String	    	${ver}	     .
+    ${major}=		Convert To Integer	${words[0]}
+	
+    # Check the version and fail the test if necessary
+    Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'
