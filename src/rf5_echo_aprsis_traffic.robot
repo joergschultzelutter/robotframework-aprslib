@@ -7,6 +7,7 @@
 
 *** Settings ***
 Library						AprsLibrary.py
+Library						String
 
 Suite Setup					Open APRS-IS Connection
 Suite Teardown					Close APRS-IS Connection
@@ -27,6 +28,10 @@ RF5 Echo APRS-IS Raw Traffic
 
 *** Keywords ***
 Open APRS-IS Connection
+	# As this test uses RF5 keywords, check if we use the correct environment
+	# and abort if necessary
+	Check Robot Framework Version
+
 	${passcode}=		Calculate APRS-IS Passcode	${callsign}
 
 	Set APRS-IS Callsign	${callsign}
@@ -48,3 +53,15 @@ Receive packet from APRS-IS
 	# and display it on the console
 	${packet} =		Get Raw Message Value From APRS Packet	${packet}	
 	Log To Console		${packet}
+
+Check Robot Framework Version
+    [Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
+    # Get the version. Will be in x.x.x format, e.g. 4.1.2
+    ${ver}=		Evaluate  (robot.version.VERSION)
+
+    # Split up the string and get the major and minor versions, then convert the values to integer
+    ${words}=		Split String	    	${ver}	     .
+    ${major}=		Convert To Integer	${words[0]}
+	
+    # Check the version and fail the test if necessary
+    Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'
