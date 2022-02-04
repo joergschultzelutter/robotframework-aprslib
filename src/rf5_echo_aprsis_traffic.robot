@@ -22,6 +22,8 @@ ${filter}					t/m
 *** Test Cases ***
 RF5 Echo APRS-IS Raw Traffic
 	[Documentation]	Capture APRS messages from APRS-IS and display them on the console
+	Log To Console	\nAPRS-IS Echo Server
+	Log To Console	Press CTRL-C to quit	
 	WHILE	${True}
 		Receive Packet From APRS-IS
 	END
@@ -38,11 +40,12 @@ Open APRS-IS Connection
 	Set APRS-IS Passcode	${passcode}
 	Set APRS-IS Filter	${filter}
 
-	Log			Connecting to APRS-IS
+	Log To Console		Connecting to APRS-IS
 	Connect to APRS-IS
+	Log To Console		Connected to APRS-IS
 
 Close APRS-IS Connection
-	Log			Disconnect from APRS-IS
+	Log To Console 		Disconnect from APRS-IS
 	Disconnect from APRS-IS
 
 Receive packet from APRS-IS 
@@ -55,13 +58,13 @@ Receive packet from APRS-IS
 	Log To Console		${packet}
 
 Check Robot Framework Version
-    [Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
-    # Get the version. Will be in x.x.x format, e.g. 4.1.2
-    ${ver}=		Evaluate  (robot.version.VERSION)
+	[Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
+	# Get the version. Will be in x.x.x format, e.g. 4.1.2
+	${ver}=		Evaluate  (robot.version.VERSION)
 
-    # Split up the string and get the major and minor versions, then convert the values to integer
-    ${words}=		Split String	    	${ver}	     .
-    ${major}=		Convert To Integer	${words[0]}
+	# Split up the string and get the major and minor versions, then convert the values to integer
+	${words}=		Split String	    	${ver}	     .
+	${major}=		Convert To Integer	${words[0]}
 	
-    # Check the version and fail the test if necessary
-    Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'
+	# Check the version and fail the test if necessary
+	Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'

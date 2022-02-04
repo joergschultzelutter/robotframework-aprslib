@@ -41,7 +41,7 @@ Receive packet from APRS-IS
 	[Documentation]			VERY simplified ack-and-respond-to-message test case. Sends ack & msg to user, then terminates the test
 
 	# Get the packet from APRS-IS
-	Log				Receive message from APRS-IS
+	Log To Console			Receive message from APRS-IS
 	${packet} =			Receive APRS Packet
 
 	Log To Console			Receive complete
@@ -150,7 +150,7 @@ Process APRS Response
 Send Packet to APRS-IS
 	[Documentation]			Send packet to APRS-IS
 	[arguments]			${message}
-	Log				Send Packet to APRS-IS
+	Log To Console			Send Packet to APRS-IS
 	Send APRS Packet		${message}
 
 Open APRS-IS Connection
@@ -166,22 +166,22 @@ Open APRS-IS Connection
 	Set APRS-IS Passcode		${passcode}
 	Set APRS-IS Filter		${filter}
 
-	Log				Connecting to APRS-IS
+	Log To Console			Connecting to APRS-IS
 	Connect to APRS-IS
 
 Close APRS-IS Connection
 	[Documentation]			Closes an existing connection to APRS-IS
-	Log				Disconnect from APRS-IS
+	Log To Console			Disconnect from APRS-IS
 	Disconnect from APRS-IS
 	
 Check Robot Framework Version
-    [Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
-    # Get the version. Will be in x.x.x format, e.g. 4.1.2
-    ${ver}=		Evaluate  (robot.version.VERSION)
+	[Documentation]  Checks the robotframework's version and aborts if we don't use minimum version 5.x.x
+	# Get the version. Will be in x.x.x format, e.g. 4.1.2
+	${ver}=		Evaluate  (robot.version.VERSION)
 
-    # Split up the string and get the major and minor versions, then convert the values to integer
-    ${words}=		Split String	    	${ver}	     .
-    ${major}=		Convert To Integer	${words[0]}
+	# Split up the string and get the major and minor versions, then convert the values to integer
+	${words}=		Split String	    	${ver}	     .
+	${major}=		Convert To Integer	${words[0]}
 	
-    # Check the version and fail the test if necessary
-    Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'
+	# Check the version and fail the test if necessary
+	Run Keyword If	'${major}' < '5' 	Fatal Error   msg=This test suite can only be run with Robot Framework 5.x.x. Present Version is '${ver}'
