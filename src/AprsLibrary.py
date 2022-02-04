@@ -20,7 +20,7 @@
 #
 
 from robot.api.deco import library, keyword
-from robot.api.logger import librarylogger as logger
+#from robot.api.logger import librarylogger as robotlogger
 import aprslib
 import re
 import logging
@@ -161,7 +161,7 @@ class AprsLibrary:
         # Apply a crude format filter and check if we have received something valid
         if aprsis_filter != "":
             matches = re.findall(
-                r"^[r|p|b|o|t|s|d|a|e|g|q|m|f]\/", aprsis_filter, re.IGNORECASE
+                r"^[rpbotsdaegqmf]\/", aprsis_filter, re.IGNORECASE
             )
             if not matches:
                 raise ValueError("Invalid APRS-IS server filter string")
@@ -334,7 +334,7 @@ class AprsLibrary:
         # Are we connected? If not, then properly destroy what we
         # may have gathered as data and raise an error
         if not self.ais._connected:
-            disconnect_aprsis(self)
+            self.disconnect_aprsis(self)
             raise ConnectionError(
                 f"Cannot connect to APRS-IS with server {self.aprsis_server} port {self.aprsis_port} callsign {self.aprsis_callsign}"
             )
