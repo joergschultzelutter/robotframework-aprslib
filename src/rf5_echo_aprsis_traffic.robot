@@ -28,7 +28,7 @@ RF5 Echo APRS-IS Raw Traffic
 
 *** Keywords ***
 Open APRS-IS Connection
-	# As this test uses RF5 keywords, check if we use the correct environment
+	# As this test suite uses RF5 keywords, check if we use the correct environment
 	# and abort if necessary
 	Check Robot Framework Version
 
