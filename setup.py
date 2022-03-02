@@ -2,21 +2,19 @@
 
 from setuptools import setup, find_packages
 import re
-import os
-import sys
+from os.path import abspath, dirname, join
+
+CURDIR = dirname(abspath(__file__))
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-version_regex = r"^v(?P<version>\d*\.\d*\.\d*$)"
-version = os.environ.get('CI_COMMIT_TAG', f'2.{os.environ.get("CI_COMMIT_REF_NAME","0.0")}')
-full_version_match = re.fullmatch(version_regex, version)
-if full_version_match:
-    version = full_version_match.group('version')
+with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
+    VERSION = re.search('\n__version__ = "(.*)"', f.read()).group(1)
 
 setup(
     name="robotframework-aprslib",
-    version=version,
+    version=VERSION,
     description="Robot Framework keywords for aprslib Python Library, https://github.com/rossengeorgiev/aprs-python",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -35,7 +33,7 @@ setup(
         "Framework :: Robot Framework",
         "Topic :: Communications :: Ham Radio",
     ],
-    license="Apache License, Version 2.0",
+    license="GNU General Public License v3 (GPLv3)",
     install_requires=["robotframework>=3.2", "aprslib>=0.7.0"],
     include_package_data=True,
     keywords=["Ham Radio","Amateur Radio", "APRS", "Robot Framework"]
