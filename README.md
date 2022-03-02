@@ -19,11 +19,11 @@ In order to run these scripts, you need to change them and add your call sign to
 
 Replace the current placeholder with your call sign and you are good to go.
 
-- [Echo incoming APRS messages](src/echo_aprsis_traffic.robot)
-- [Send and receive a single APRS message](src/send_and_receive_single_packet.robot)
-- [Receive a message, acknowledge it if necessary and then respond to it](src/receive_and_send_single_packet.robot)
-- [ROBOT FRAMEWORK 5: Echo incoming APRS messages](src/rf5_echo_aprsis_traffic.robot)
-- [ROBOT FRAMEWORK 5: Receive a message, acknowledge it if necessary and then respond to it](src/rf5_receive_and_send.robot)
+- [Echo incoming APRS messages](tests/echo_aprsis_traffic.robot)
+- [Send and receive a single APRS message](tests/send_and_receive_single_packet.robot)
+- [Receive a message, acknowledge it if necessary and then respond to it](tests/receive_and_send_single_packet.robot)
+- [ROBOT FRAMEWORK 5: Echo incoming APRS messages](tests/rf5_echo_aprsis_traffic.robot)
+- [ROBOT FRAMEWORK 5: Receive a message, acknowledge it if necessary and then respond to it](tests/rf5_receive_and_send.robot)
 
 The Robot Framework 5 examples use the new WHILE loop for an 'eternal' loop; all other code samples use finite FOR loops and will terminate after processing 10 records in a row
 

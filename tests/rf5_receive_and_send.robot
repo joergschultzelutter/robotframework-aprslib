@@ -2,13 +2,13 @@
 # This is a VERY simplified test which may fail if you send unconfirmed 
 # messages OR messages with the more modern ack/rej schema to it
 #
-# REQUIRES ROBOT FRAMEWORK 5.0 or greater
+# REQUIRES ROBOT FRAMEWORK 5.0 or greater (will be automatically detected)
 #
 # Author: Joerg Schultze-Lutter, DF1JSL
 # https://www.github.com/joergschultzelutter
 
 *** Settings ***
-Library						AprsLibrary.py
+Library						AprsLibrary
 Library						String
 
 Suite Setup					Open APRS-IS Connection

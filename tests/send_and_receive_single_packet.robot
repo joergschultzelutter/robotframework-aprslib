@@ -4,7 +4,7 @@
 # https://www.github.com/joergschultzelutter
 
 *** Settings ***
-Library					AprsLibrary.py
+Library					AprsLibrary
 
 Suite Setup				Open APRS-IS Connection
 Suite Teardown				Close APRS-IS Connection
