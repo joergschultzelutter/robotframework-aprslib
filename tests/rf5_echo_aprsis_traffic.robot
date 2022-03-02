@@ -1,12 +1,12 @@
 # This is a simple robot which connects to APRS-IS and echoes APRS messages
 # 
-# REQUIRES ROBOT FRAMEWORK 5.0 or greater
+# REQUIRES ROBOT FRAMEWORK 5.0 or greater (will be automatically detected)
 #
 # Author: Joerg Schultze-Lutter, DF1JSL
 # https://www.github.com/joergschultzelutter/robotframework/aprslib
 
 *** Settings ***
-Library						AprsLibrary.py
+Library						AprsLibrary
 Library						String
 
 Suite Setup					Open APRS-IS Connection

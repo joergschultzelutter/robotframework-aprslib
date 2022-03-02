@@ -6,19 +6,19 @@
 # https://www.github.com/joergschultzelutter
 
 *** Settings ***
-Library						AprsLibrary.py
-Library						String
+Library					AprsLibrary
+Library					String
 
-Suite Setup					Open APRS-IS Connection
+Suite Setup				Open APRS-IS Connection
 Suite Teardown				Close APRS-IS Connection
 
 *** Variables ***
 
 # This is your APRS-IS call sign. Replace this value with your personal call sign
-${callsign}					YOURCALLSIGN
+${callsign}				YOURCALLSIGN
 
 # APRS-IS server filter, see http://www.aprs-is.net/javAPRSFilter.aspx
-${filter}					g/${callsign}*
+${filter}				g/${callsign}*
 
 *** Test Cases ***
 Simple Receive-and-Respond Test Case
@@ -31,7 +31,7 @@ Simple Receive-and-Respond Test Case
 	# The current setup will accept up to 10 messages, confirm them whereas
 	# necessary and send a pesonalized response. After processing these 10
 	# messages, the test will stop its execution
-	Wait Until Keyword Succeeds		10x		0sec	Receive Packet From APRS-IS
+	Wait Until Keyword Succeeds	10x	0sec	Receive Packet From APRS-IS
 
 *** Keywords ***
 
@@ -39,8 +39,8 @@ Receive packet from APRS-IS
 	[Documentation]			VERY simplified ack-and-respond-to-message test case. Sends ack & msg to user, then terminates the test
 
 	# Get the packet from APRS-IS
-	Log						Receive message from APRS-IS
-	${packet} =				Receive APRS Packet
+	Log				Receive message from APRS-IS
+	${packet} =			Receive APRS Packet
 
 	Log To Console			Receive complete
 
@@ -55,7 +55,7 @@ Receive packet from APRS-IS
 
 Send Acknowledgment
 	[Documentation]			Send an acknowledgement in case the incoming message 
-	[Arguments]				${MYPACKET}
+	[Arguments]			${MYPACKET}
 
 	${from_string}=			Get From Value From APRS Packet				${MYPACKET}
 	${adresse_string}=		Get Adresse Value From APRS Packet			${MYPACKET}
@@ -70,11 +70,11 @@ Send Acknowledgment
 
 	# do not flood the APRS-IS network
 	Log To Console			Sleep 5 secs
-	Sleep					5sec
+	Sleep				5sec
 
 Process APRS Message
 	[Documentation]			Process an APRS Message (format type: 'messsage')
-	[Arguments]				${MYPACKET}
+	[Arguments]			${MYPACKET}
 
 	Log To Console			Processing an APRS 'message' packet
 
@@ -93,7 +93,7 @@ Process APRS Message
 
 	# Send the response message
 	# Get a message number from the library
-	${mymsgno}=				Get APRS MsgNo As Alphanumeric Value
+	${mymsgno}=			Get APRS MsgNo As Alphanumeric Value
 
 	# Increment the library's message number (not really necessary here as we only deal with one message)
 	Increment APRS MsgNo
@@ -114,7 +114,7 @@ Process APRS Message
 
 Process APRS Response
 	[Documentation]			Process an APRS Response (format type: 'response'). Causes a desired fail (thus causing another WUKS loop) in case an ack/rej has been received
-	[Arguments]				${MYPACKET}
+	[Arguments]			${MYPACKET}
 
 	# At this point, we already know that there is a response present. Normally, this can only be an ack or a rej
 	# but let's be sure about that and check the value
@@ -127,22 +127,22 @@ Process APRS Response
 
 Send Packet to APRS-IS
 	[Documentation]			Send packet to APRS-IS
-	[arguments]				${message}
-	Log						Send Packet to APRS-IS
+	[arguments]			${message}
+	Log				Send Packet to APRS-IS
 	Send APRS Packet		${message}
 
 Open APRS-IS Connection
 	[Documentation]			Establishes a connection to APRS-IS
 	${passcode}=			Calculate APRS-IS Passcode	${callsign}
 
-	Set APRS-IS Callsign	${callsign}
-	Set APRS-IS Passcode	${passcode}
+	Set APRS-IS Callsign		${callsign}
+	Set APRS-IS Passcode		${passcode}
 	Set APRS-IS Filter		${filter}
 
-	Log						Connecting to APRS-IS
+	Log				Connecting to APRS-IS
 	Connect to APRS-IS
 
 Close APRS-IS Connection
 	[Documentation]			Closes an existing connection to APRS-IS
-	Log						Disconnect from APRS-IS
+	Log				Disconnect from APRS-IS
 	Disconnect from APRS-IS
