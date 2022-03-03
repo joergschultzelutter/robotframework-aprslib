@@ -40,7 +40,7 @@ jobs:
       - name: Update version
         uses: DamianReeves/write-file-action@master
         with:
-          path: '/VERSION'
+          path: './VERSION'
           contents: "${{ steps.regex.outputs.group1 }}"
           write-mode: overwrite
       - name: output version
