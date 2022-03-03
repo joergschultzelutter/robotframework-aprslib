@@ -32,10 +32,10 @@ jobs:
           path: ./src/AprsLibrary/AprsLibrary.py
       - name: get Version
         id: regex
-        uses: AsasInnab/regex-action@v1
+        uses: actions-ecosystem/action-regex-match@v2
         with:
-          regex_pattern: '__version__\s=\s"(.*)"'
-          regex_flags: 'gim'
-          search_string: '${{ steps.package.outputs.content }}'
+          regex: '__version__\s=\s"(.*)"'
+          flags: 'gim'
+          text: '${{ steps.package.outputs.content }}'
       - name: output version
-        run: echo "My version is ${{ steps.regex.outputs.first_match }}"
+        run: echo "My version is ${{ steps.regex.outputs.group1 }}"
