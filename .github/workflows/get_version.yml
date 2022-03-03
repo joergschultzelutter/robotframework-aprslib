@@ -34,7 +34,7 @@ jobs:
         id: regex
         uses: AsasInnab/regex-action@v1
         with:
-          regex_pattern: 'JIR-[0-9]+'
+          regex_pattern: '\n__version__ = "(.*)"'
           regex_flags: 'gim'
           search_string: '${{ steps.package.outputs.content }}'
       - name: output version
