@@ -39,7 +39,7 @@ jobs:
         id: regex
         uses: actions-ecosystem/action-regex-match@v2
         with:
-          regex: '__version__\s=\s"(.*)"'
+          regex: '__versin__\s=\s"(.*)"'
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
       - name: Cancel build if version not found
