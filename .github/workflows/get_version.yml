@@ -30,6 +30,8 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./README.md
+      - name: output file
+        run: echo "My JIRA ticket number is ${{ steps.package.outputs.content }}"
       - name: get Version
         id: regex
         uses: AsasInnab/regex-action@v1
