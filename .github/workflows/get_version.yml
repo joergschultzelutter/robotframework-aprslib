@@ -40,7 +40,7 @@ jobs:
       - name: Update version
         uses: frdrwrt/write-to-file@v1
         with:
-          filename: '/VERSION'
+          filepath: '/VERSION'
           content: '${{ steps.regex.outputs.group1 }}'
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
