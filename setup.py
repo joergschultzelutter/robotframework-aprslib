@@ -11,7 +11,7 @@ with open("README.md", "r") as fh:
     print("Lese README")
     print (dirname(abspath("README.md")))
     long_description = fh.read()
-    print len(long_description)
+    print (len(long_description))
 
 #with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
 with open("src/AprsLibrary/AprsLibrary.py", encoding="utf-8") as f:
