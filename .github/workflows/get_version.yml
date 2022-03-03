@@ -35,7 +35,7 @@ jobs:
         uses: AsasInnab/regex-action@v1
         with:
           regex_pattern: 'JIR-[0-9]+'
-          regex_flags: ''
+          regex_flags: 'GI'
           search_string: '${{ steps.package.outputs.content }}'
       - name: output version
         run: echo "My JIRA ticket number is ${{ steps.regex.outputs.first_match }}"
