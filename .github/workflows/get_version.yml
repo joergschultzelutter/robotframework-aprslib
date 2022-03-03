@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: get-version
+name: get-version-from-file
 
 # Controls when the workflow will run
 on:
@@ -30,12 +30,19 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./src/AprsLibrary/AprsLibrary.py
-      - name: get Version
+      - name: get version via regex
         id: regex
         uses: actions-ecosystem/action-regex-match@v2
         with:
           regex: '__version__\s=\s"(.*)"'
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
+      - name: write version to VERSION file
+        uses: DamianReeves/write-file-action@v1
+        with:
+          path: ${{ env.home}}/VERSION
+          contents: |
+            echo "Hello World!"
+          write-mode: overwrite
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
