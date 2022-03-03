@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 import re
 from os.path import abspath, dirname, join
 import glob
+import subprocess
 
 CURDIR = dirname(abspath(__file__))
 print(CURDIR)
@@ -20,8 +21,16 @@ with open("VERSION", "r") as fh:
     aaa = fh.read()
     print (len(aaa))
 
-glob.glob("./*")
     
+a=glob.glob("./*")
+print(a)
+
+process = subprocess.Popen(['ls -lR', ''],
+                     stdout=subprocess.PIPE, 
+                     stderr=subprocess.PIPE)
+stdout, stderr = process.communicate()
+print (stdout)
+
 #with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
 with open(join(CURDIR, "build", "lib", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
     VERSION = re.search('\n__version__ = "(.*)"', f.read()).group(1)
