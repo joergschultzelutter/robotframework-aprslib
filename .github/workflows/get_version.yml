@@ -38,7 +38,7 @@ jobs:
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
       - name: write version to VERSION file
-        uses: DamianReeves/write-file-action@v1
+        uses: DamianReeves/write-file-action
         with:
           path: ${{ env.home}}/VERSION
           contents: |
