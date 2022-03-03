@@ -38,9 +38,10 @@ jobs:
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
       - name: Update version
-        uses: frdrwrt/write-to-file@v1
+        uses: DamianReeves/write-file-action@master
         with:
-          filepath: '/VERSION'
-          content: '${{ steps.regex.outputs.group1 }}'
+          path: '/VERSION'
+          contents: "${{ steps.regex.outputs.group1 }}"
+          write-mode: overwrite
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
