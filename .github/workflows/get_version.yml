@@ -34,8 +34,8 @@ jobs:
         id: regex
         uses: AsasInnab/regex-action@v1
         with:
-          regex_pattern: '__version__ = "(.*)"'
-          regex_flags: 'gi'
+          regex_pattern: '__version__\s=\s"(.*)"'
+          regex_flags: 'gim'
           search_string: '${{ steps.package.outputs.content }}'
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.first_match }}"
