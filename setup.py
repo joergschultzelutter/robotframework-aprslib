@@ -12,6 +12,12 @@ with open("README.md", "r") as fh:
     print (dirname(abspath("README.md")))
     long_description = fh.read()
     print (len(long_description))
+    
+with open("VERSION", "r") as fh:
+    print("Lese VERSION")
+    print (dirname(abspath("VERSION")))
+    aaa = fh.read()
+    print (len(aaa))
 
 #with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
 with open(join(CURDIR, "build", "lib", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
