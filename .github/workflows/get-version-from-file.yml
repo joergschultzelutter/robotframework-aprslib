@@ -45,7 +45,7 @@ jobs:
       - name: Update VERSION file in Repo
         uses: test-room-7/action-update-file@v1
         with:
-          file-path: '$HOME/VERSION'
+          file-path: 'VERSION'
           commit-msg: Auto-update of VERSION file
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ##      - name: output version to console
