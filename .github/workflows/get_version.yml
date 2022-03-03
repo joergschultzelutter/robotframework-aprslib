@@ -37,12 +37,10 @@ jobs:
           regex: '__version__\s=\s"(.*)"'
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
-      - name: write version to VERSION file
-        uses: DamianReeves/write-file-action@master
+      - name: Update version
+        uses: brettdorrans/write-version-to-file@master
         with:
-          path: ./VERSION
-          contents: |
-            echo "Hello World!"
-          write-mode: overwrite
+          filename: '/VERSION'
+          placeholder: '${{ steps.package.outputs.content }}'
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
