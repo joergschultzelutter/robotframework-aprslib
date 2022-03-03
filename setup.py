@@ -31,7 +31,6 @@ setup(
     ],
     license="GNU General Public License v3 (GPLv3)",
     install_requires=["robotframework>=3.2", "aprslib>=0.7.0"],
-#    package_data={'': ['VERSION']},
     include_package_data=True,    
     keywords=["Ham Radio","Amateur Radio", "APRS", "Robot Framework"]
 )
