@@ -3,6 +3,7 @@
 from setuptools import setup, find_packages
 import re
 from os.path import abspath, dirname, join
+import os.system
 
 CURDIR = dirname(abspath(__file__))
 print(CURDIR)
@@ -12,6 +13,8 @@ with open("README.md", "r") as fh:
     print (dirname(abspath("README.md")))
     long_description = fh.read()
     print (len(long_description))
+
+os.system("ls -lR")    
 
 #with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
 with open("src/AprsLibrary/AprsLibrary.py", encoding="utf-8") as f:
