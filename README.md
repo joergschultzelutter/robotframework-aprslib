@@ -51,7 +51,7 @@ You can either specify all parameters during the initial setup of the library or
 ```robotframework
 *** Settings ***
 
-Library  AprsLibrary.py  server_value  port_value  user_value  passcode_value  filter_value  message_value
+Library  AprsLibrary  server_value  port_value  user_value  passcode_value  filter_value  message_value
 
 *** Test Cases ***
 My first test case
@@ -62,7 +62,7 @@ My first test case
 ```robotframework
 *** Settings ***
 
-Library  AprsLibrary.py  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value aprsis_msgno = msgno_value
+Library  AprsLibrary  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value aprsis_msgno = msgno_value
 
 *** Test Cases ***
 My first test case
