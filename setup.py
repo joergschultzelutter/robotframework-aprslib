@@ -1,40 +1,12 @@
 #!/usr/bin/env python
 
 from setuptools import setup, find_packages
-import re
-from os.path import abspath, dirname, join
-import glob
-import subprocess
-
-CURDIR = dirname(abspath(__file__))
-print(CURDIR)
 
 with open("README.md", "r") as fh:
-    print("Lese README")
-    print (dirname(abspath("README.md")))
     long_description = fh.read()
-    print (len(long_description))
     
 with open("VERSION", "r") as fh:
-    print("Lese VERSION")
-    print (dirname(abspath("VERSION")))
-    aaa = fh.read()
-    print (len(aaa))
-
-print("glob")
-a=glob.glob("./*")
-print(a)
-
-print ("subprocess")
-process = subprocess.Popen(['ls', '-laR .'],
-                     stdout=subprocess.PIPE, 
-                     stderr=subprocess.PIPE)
-stdout, stderr = process.communicate()
-print (stdout)
-
-with open(join(".", "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
-#with open(join(CURDIR, "build", "lib", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
-    VERSION = re.search('\n__version__ = "(.*)"', f.read()).group(1)
+    VERSION = fh.read()
 
 setup(
     name="robotframework-aprslib",
