@@ -7,10 +7,11 @@ from os.path import abspath, dirname, join
 CURDIR = dirname(abspath(__file__))
 
 with open("README.md", "r") as fh:
+    print("Lese README")
     long_description = fh.read()
 
 #with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
-with open(join("src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
+with open("src/AprsLibrary/AprsLibrary.py", encoding="utf-8") as f:
     VERSION = re.search('\n__version__ = "(.*)"', f.read()).group(1)
 
 setup(
