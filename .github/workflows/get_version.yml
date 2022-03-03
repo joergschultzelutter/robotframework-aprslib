@@ -29,6 +29,6 @@ jobs:
         id: package
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./src/AprsLibrary/AprsLibrary.py
+          path: ./README.md
       - name: Echo robotframework-aprslibrary
         run: echo "${{ steps.package.outputs.content }}"
