@@ -5,6 +5,7 @@ import re
 from os.path import abspath, dirname, join
 
 CURDIR = dirname(abspath(__file__))
+print(CURDIR)
 
 with open("README.md", "r") as fh:
     print("Lese README")
