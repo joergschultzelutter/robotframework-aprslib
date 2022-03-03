@@ -45,8 +45,6 @@ jobs:
       - name: Cancel build if version not found
         if: ${{ steps.regex.outputs.match == '' }}
         uses: andymckay/cancel-action@0.2
-        with:
-          name: Cancelling build, version not found!
       - name: Write local VERSION file to work repo
         uses: DamianReeves/write-file-action@master
         with:
