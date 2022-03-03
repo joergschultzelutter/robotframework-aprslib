@@ -3,7 +3,7 @@
 
 ```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows __licensed ham radio operators__ to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
 
-![transmit](img/tx.jpg)![robot](img/robot.jpg)![receive](img/rx.jpg)
+![transmit](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/tx.jpg)![robot](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg)![receive](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/rx.jpg)
 
 ## Installation
 
