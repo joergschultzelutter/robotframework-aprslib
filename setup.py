@@ -9,7 +9,7 @@ print(CURDIR)
 
 with open("README.md", "r") as fh:
     print("Lese README")
-    print dirname(abspath("README.md"))
+    print (dirname(abspath("README.md")))
     long_description = fh.read()
     print len(long_description)
 
