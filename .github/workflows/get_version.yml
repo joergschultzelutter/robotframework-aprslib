@@ -38,7 +38,7 @@ jobs:
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
       - name: Update version
-        uses: frdrwrt/write-to-file@v1.0
+        uses: frdrwrt/write-to-file@v1
         with:
           filename: '/VERSION'
           content: '${{ steps.regex.outputs.group1 }}'
