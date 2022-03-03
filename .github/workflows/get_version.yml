@@ -29,15 +29,13 @@ jobs:
         id: package
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./README.md
-      - name: output file
-        run: echo "My JIRA ticket number is ${{ steps.package.outputs.content }}"
+          path: ./src/AprsLibrary/AprsLibrary.py
       - name: get Version
         id: regex
         uses: AsasInnab/regex-action@v1
         with:
           regex_pattern: '\n__version__ = "(.*)"'
-          regex_flags: 'gim'
+          regex_flags: 'gi'
           search_string: '${{ steps.package.outputs.content }}'
       - name: output version
-        run: echo "My JIRA ticket number is ${{ steps.regex.outputs.first_match }}"
+        run: echo "My version is ${{ steps.regex.outputs.first_match }}"
