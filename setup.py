@@ -10,7 +10,7 @@ with open("VERSION", "r") as fh:
 
 setup(
     name="robotframework-aprslib",
-    version="0.8.0",
+    version=VERSION,
     description="Robot Framework keywords for aprslib Python Library, https://github.com/rossengeorgiev/aprs-python",
     long_description=long_description,
     long_description_content_type="text/markdown",
