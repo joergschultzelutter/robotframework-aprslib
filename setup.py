@@ -5,12 +5,12 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
     
-with open("VERSION", "r") as fh:
-    VERSION = fh.read()
+#with open("VERSION", "r") as fh:
+#    VERSION = fh.read()
 
 setup(
     name="robotframework-aprslib",
-    version=VERSION,
+    version="0.8.0",
     description="Robot Framework keywords for aprslib Python Library, https://github.com/rossengeorgiev/aprs-python",
     long_description=long_description,
     long_description_content_type="text/markdown",
