@@ -1,4 +1,5 @@
-# This is a basic workflow to help you get started with Actions
+# Gets __version__ information from our Robot Framework library and updates the repository's
+# local VERSION file
 
 name: get-version-from-file
 
@@ -7,9 +8,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+ 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -37,17 +36,17 @@ jobs:
           regex: '__version__\s=\s"(.*)"'
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
-      - name: Write local version file
+      - name: Write local VERSION file to work repo
         uses: DamianReeves/write-file-action@master
         with:
           path: './VERSION'
           contents: "${{ steps.regex.outputs.group1 }}"
           write-mode: overwrite
-      - name: Update version file in repo
+      - name: Update VERSION file in Repo
         uses: test-room-7/action-update-file@v1
         with:
-          file-path: 'VERSION'
-          commit-msg: Update VERSION
+          file-path: '$HOME/VERSION'
+          commit-msg: Auto-update of VERSION file
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: output version to console
-        run: echo "My version is ${{ steps.regex.outputs.group1 }}"
+##      - name: output version to console
+##        run: echo "My version is ${{ steps.regex.outputs.group1 }}"
