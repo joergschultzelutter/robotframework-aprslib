@@ -21,18 +21,19 @@ with open("VERSION", "r") as fh:
     aaa = fh.read()
     print (len(aaa))
 
-    
+print("glob")
 a=glob.glob("./*")
 print(a)
 
-process = subprocess.Popen(['ls -lR', ''],
+print ("subprocess")
+process = subprocess.Popen(['ls', '-laR .'],
                      stdout=subprocess.PIPE, 
                      stderr=subprocess.PIPE)
 stdout, stderr = process.communicate()
 print (stdout)
 
-#with open(join(CURDIR, "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
-with open(join(CURDIR, "build", "lib", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
+with open(join(".", "src", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
+#with open(join(CURDIR, "build", "lib", "AprsLibrary", "AprsLibrary.py"), encoding="utf-8") as f:
     VERSION = re.search('\n__version__ = "(.*)"', f.read()).group(1)
 
 setup(
