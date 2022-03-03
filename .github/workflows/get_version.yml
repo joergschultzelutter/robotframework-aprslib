@@ -37,11 +37,17 @@ jobs:
           regex: '__version__\s=\s"(.*)"'
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
-      - name: Update version
-        uses: DamianReeves/write-file-action@master
+      - name: Write local version file
+        uses: test-room-7/action-update-file@v1
         with:
           path: './VERSION'
           contents: "${{ steps.regex.outputs.group1 }}"
           write-mode: overwrite
-      - name: output version
+      - name: Update version file in repo
+        uses: test-room-7/action-update-file@v1
+        with:
+          file-path: './VERSION'
+          commit-msg: Update VERSION
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: output version to console
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
