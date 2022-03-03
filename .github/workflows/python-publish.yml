@@ -53,8 +53,6 @@ jobs:
           file-path: 'VERSION'
           commit-msg: Auto-update of VERSION file
           github-token: ${{ secrets.GITHUB_TOKEN }}
-##      - name: output version to console
-##        run: echo "My version is ${{ steps.regex.outputs.group1 }}"
 
   # 
   # JOB 2
