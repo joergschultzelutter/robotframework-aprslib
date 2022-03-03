@@ -38,9 +38,9 @@ jobs:
           flags: 'gim'
           text: '${{ steps.package.outputs.content }}'
       - name: Update version
-        uses: brettdorrans/write-version-to-file@master
+        uses: frdrwrt/write-to-file@v1.0
         with:
           filename: '/VERSION'
-          placeholder: '${{ steps.package.outputs.content }}'
+          content: '${{ steps.regex.outputs.group1 }}'
       - name: output version
         run: echo "My version is ${{ steps.regex.outputs.group1 }}"
