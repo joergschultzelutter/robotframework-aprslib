@@ -44,7 +44,7 @@ jobs:
         id: reader
         uses: juliangruber/read-file-action@v1
         with:
-          path: $SOURCE_FILE
+          path: ${{ env.SOURCE_FILE }}
       # Run regex on content and try to get the version data
       - name: get version via regex
         id: regex
