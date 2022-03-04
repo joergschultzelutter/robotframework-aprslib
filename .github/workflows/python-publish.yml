@@ -23,8 +23,10 @@ on:
 #    types: [published]
   push:
 
+# Configure these settings
 env:
   SOURCE_FILE:  ./src/AprsLibrary/AprsLibrary.py
+  REGEX_PATTERN:  __version__\s=\s"(.*)"
 
 jobs:
   # 
@@ -50,7 +52,8 @@ jobs:
         id: regex
         uses: actions-ecosystem/action-regex-match@v2
         with:
-          regex: '__version__\s=\s"(.*)"'
+#          regex: '__version__\s=\s"(.*)"'
+          regex: ${{ env.REGEX_PATTERN }}
           flags: 'gim'
           text: '${{ steps.reader.outputs.content }}'
       # Cancel current build if we did not get a match. Note:
