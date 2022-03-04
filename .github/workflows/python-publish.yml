@@ -13,13 +13,15 @@
 # Job 2 will build and distribute the PyPi package to PyPi Test and (if Test deployment
 # was successful) also to Prod
 #
-# External dependencies: MANIFEST.im and setup.py from repo root folder
+# External dependencies: 
+# - MANIFEST.im and setup.py from repo root folder
+# - PROD_PYPI_API_TOKEN and TEST_PYPI_API_TOKEN as Github Secrets (Settings > Secrets > Actions)
 #
-# Mandatory configuration values: 
+# Configuration settings: 
 # - SOURCE_FILE environment variable: path.to.your.Python.file
 # - REGEX_PATTERN: change this if your version info in the Python file uses
 #                  a different pattern. Default behavior assumes that
-#                  the version information in your file looks like this:
+#                  the version information in your file looks something like this:
 #                  __version__ = "1.2.3"
 
 name: Upload Python Package 
@@ -34,7 +36,7 @@ on:
 #
 env:
   SOURCE_FILE:  ./src/AprsLibrary/AprsLibrary.py
-  REGEX_PATTERN:  __version__\s=\s"(.*)"
+  REGEX_PATTERN:  __version__\s*=\s*"(.*)"
 
 #
 # Job section
