@@ -15,6 +15,12 @@
 #
 # External dependencies: MANIFEST.im and setup.py from repo root folder
 #
+# Mandatory configuration values: 
+# - SOURCE_FILE environment variable: path.to.your.Python.file
+# - REGEX_PATTERN: change this if your version info in the Python file uses
+#                  a different pattern. Default behavior assumes that
+#                  the version information in your file looks like this:
+#                  __version__ = "1.2.3"
 
 name: Upload Python Package 
 
@@ -23,11 +29,16 @@ on:
 #    types: [published]
   push:
 
-# Configure these settings
+# 
+# Configuration section - change values if necessary
+#
 env:
   SOURCE_FILE:  ./src/AprsLibrary/AprsLibrary.py
   REGEX_PATTERN:  __version__\s=\s"(.*)"
 
+#
+# Job section
+#
 jobs:
   # 
   # BEGIN of Job 1
@@ -52,7 +63,6 @@ jobs:
         id: regex
         uses: actions-ecosystem/action-regex-match@v2
         with:
-#          regex: '__version__\s=\s"(.*)"'
           regex: ${{ env.REGEX_PATTERN }}
           flags: 'gim'
           text: '${{ steps.reader.outputs.content }}'
