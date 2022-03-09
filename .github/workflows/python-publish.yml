@@ -80,6 +80,12 @@ jobs:
         if: ${{ steps.regex.outputs.match == '' }}
         run: sleep 60s
         shell: bash
+      - name: Check Github refname against Python version
+        run: echo ${{github.ref_name}}
+        
+        
+        
+        
   #
   # END of Job 1
   # 
