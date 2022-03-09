@@ -49,6 +49,8 @@ jobs:
   # VERSION wrhich resides in the repo's root dir
   update-version:
     runs-on: ubuntu-latest
+    outputs: 
+      output1: ${{ steps.regex.outputs.group1 }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -85,10 +87,6 @@ jobs:
       # so don't use an 'if' statement here!
       #
       # 'path' needs to be set relative to repo root
-      - name: Create environment variable
-        if: ${{ steps.regex.outputs.match != '' }}
-        run: echo "JSLTESTVAR=" "${{ steps.regex.outputs.group1 }}" >> $GITHUB_ENV
-        shell: bash
       - name: Write local VERSION file to work repo
         uses: DamianReeves/write-file-action@master
         with:
@@ -131,10 +129,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-        
-    - name: Variable ausgeben
-      run: echo "${{ JSLTESTVAR }}"
+
+    - name: output content,
+      run: echo ${{ needs.update-version.outputs.output1}}
       shell: bash
+
+
+
+#    - name: Variable ausgeben
+#      run: echo "${{ JSLTESTVAR }}"
+#      shell: bash
         
         
     # Install all dependencies
