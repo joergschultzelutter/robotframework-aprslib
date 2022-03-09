@@ -6,14 +6,16 @@ import os
 if __name__ == "__main__":
 
 	print("========= DEMODEMO ==========")
-	print (os.getenv("GITHUB_PROGRAM_VERSION"))
+	VERSION = os.getenv("GITHUB_PROGRAM_VERSION")
+	print (VERSION)
 	print("========= DEMODEMO ==========")
 
 	with open("README.md", "r") as fh:
 		long_description = fh.read()
 		
-	VERSION = "0.8.0"
-
+	if not VERSION:
+		raise ValueError("Did not receive version info from GitHub")
+		
 	setup(
 		name="robotframework-aprslib",
 		version=VERSION,
@@ -37,6 +39,5 @@ if __name__ == "__main__":
 		],
 		license="GNU General Public License v3 (GPLv3)",
 		install_requires=["robotframework>=3.2", "aprslib>=0.7.0"],
-		include_package_data=True,    
 		keywords=["Ham Radio","Amateur Radio", "APRS", "Robot Framework"]
 	)
