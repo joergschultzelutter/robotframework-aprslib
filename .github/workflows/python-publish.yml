@@ -123,13 +123,6 @@ jobs:
     needs: update-version
 
     steps:
-    - uses: actions/checkout@v2
-    # Set up Python environment
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-
     - name: output content
       run: echo ${{ needs.update-version.outputs.output1}}
       shell: bash
@@ -137,6 +130,13 @@ jobs:
     - name: set env var
       run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.output1 }}" >> $GITHUB_ENV
       shell: bash
+
+    - uses: actions/checkout@v2
+    # Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
 
 #    - name: Variable ausgeben
 #      run: echo "${{ JSLTESTVAR }}"
