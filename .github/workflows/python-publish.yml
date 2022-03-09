@@ -81,7 +81,7 @@ jobs:
         run: sleep 60s
         shell: bash
       - name: Check Github ref against Python version
-        run: echo ${{github.ref}}
+        run: echo ${{github}}
         
         
         
