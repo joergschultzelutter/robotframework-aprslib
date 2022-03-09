@@ -128,7 +128,7 @@ jobs:
       shell: bash
 
     - name: set env var
-      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.output1 }}" >> $GITHUB_ENV
+      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.output1 }}" >> .env
       shell: bash
 
     - uses: actions/checkout@v2
