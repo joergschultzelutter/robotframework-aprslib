@@ -80,14 +80,22 @@ jobs:
         if: ${{ steps.regex.outputs.match == '' }}
         run: sleep 60s
         shell: bash
-      - name: Abort if Github reference is not equal to tag
-        if: ${{ github.ref_type != 'tag' }}
+#     - name: Abort if Github reference is not equal to tag
+#       if: ${{ github.ref_type != 'tag' }}
+#       uses: andymckay/cancel-action@0.2
+#     - name: Sleep if build was cancelled
+#       if: ${{ github.ref_type != 'tag' }}
+#       run: sleep 60s
+#       shell: bash
+      - name: Abort of Github refname is not equal to Python version
+        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
         uses: andymckay/cancel-action@0.2
       - name: Sleep if build was cancelled
-        if: ${{ github.ref_type != 'tag' }}
+        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
         run: sleep 60s
         shell: bash
-    
+        
+        
         
         
   #
