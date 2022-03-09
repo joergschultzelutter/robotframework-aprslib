@@ -6,14 +6,13 @@ import os
 if __name__ == "__main__":
 
 	print("========= DEMODEMO ==========")
-	print (os.getenv("JSLTESTVAR"))
+	print (os.getenv("GITHUB_PROGRAM_VERSION"))
 	print("========= DEMODEMO ==========")
 
 	with open("README.md", "r") as fh:
 		long_description = fh.read()
 		
-	with open("VERSION", "r") as fh:
-		VERSION = fh.read()
+	VERSION = "0.8.0"
 
 	setup(
 		name="robotframework-aprslib",
