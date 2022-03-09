@@ -150,7 +150,7 @@ jobs:
         pip install build
     # Build the package
     - name: Build package
-      run: python -m build
+      run: export JSLTESTVAR=${{ needs.update-version.outputs.output1 }};python -m build
     # Publish everything to Test PyPi
     - name: Publish package to Test PyPi
       uses: pypa/gh-action-pypi-publish@release/v1
