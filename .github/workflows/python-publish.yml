@@ -1,4 +1,4 @@
-# Workflow: Extract version from Python file, write VERSION file, generate PyPi package and
+# Workflow: Extract version from Python file, verify version against release tag, generate PyPi package and
 #           upload content to PyPi Test / Prod
 #           Will only be executed when a new release is being published
 # Author  : Joerg Schultze-Lutter
@@ -7,14 +7,16 @@
 #
 # Github Action consists of 2 jobs:
 #
-# Job 1 will read the Python file which contains the version data, extract it and
-# write a VERSION file to the repo's root folder. For other 
+# Job 1 will read the Python file which contains the version data, extract it,
+# verify if we deal with a new tagged release, verify the release's version info
+# against the data that was extracted from the Python file and in case all
+# previous steps were successful, the version information is passed on to the next step.
 #
 # Job 2 will build and distribute the PyPi package to PyPi Test and (if Test deployment
 # was successful) also to Prod
 #
 # External dependencies: 
-# - MANIFEST.im and setup.py from repo root folder
+# - setup.py from repo root folder
 # - PROD_PYPI_API_TOKEN and TEST_PYPI_API_TOKEN as Github Secrets (Settings > Secrets > Actions)
 #
 # Configuration settings: 
@@ -80,20 +82,22 @@ jobs:
         if: ${{ steps.regex.outputs.match == '' }}
         run: sleep 60s
         shell: bash
-#     - name: Abort if Github reference is not equal to tag
+        
+        
+#     - name: Cancel build if Github reference is not equal to tag
 #       if: ${{ github.ref_type != 'tag' }}
 #       uses: andymckay/cancel-action@0.2
 #     - name: Sleep if build was cancelled
 #       if: ${{ github.ref_type != 'tag' }}
 #       run: sleep 60s
 #       shell: bash
-      - name: Abort of Github refname is not equal to Python version
-        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
-        uses: andymckay/cancel-action@0.2
-      - name: Sleep if build was cancelled
-        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
-        run: sleep 60s
-        shell: bash
+#      - name: Cancel build if Github refname is not equal to Python version
+#        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
+#        uses: andymckay/cancel-action@0.2
+#      - name: Sleep if build was cancelled
+#        if: ${{ github.ref_name != steps.regex.outputs.group1 }}
+#        run: sleep 60s
+#        shell: bash
         
         
         
@@ -116,13 +120,13 @@ jobs:
     needs: update-version
 
     steps:
-    - name: output content
-      run: echo ${{ needs.update-version.outputs.my-program-version}}
-      shell: bash
+#    - name: output content
+#      run: echo ${{ needs.update-version.outputs.my-program-version}}
+#      shell: bash
 
-    - name: set env var
-      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.my-program-version }}" >> .env
-      shell: bash
+#    - name: set env var
+#      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.my-program-version }}" >> .env
+#      shell: bash
 
     - uses: actions/checkout@v2
     # Set up Python environment
