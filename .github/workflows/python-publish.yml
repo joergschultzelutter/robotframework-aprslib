@@ -120,7 +120,7 @@ jobs:
         pip install build
     # Build the package. The export MUST be part of this step
     - name: Build package
-      run: export GITHUB_PROGRAM_VERSION=${{ needs.update-version.outputs.my-program-version }};python -m build
+      run: export GITHUB_PROGRAM_VERSION='${{ needs.update-version.outputs.my-program-version }}';python -m build
     # Publish everything to Test PyPi
     - name: Publish package to Test PyPi
       uses: pypa/gh-action-pypi-publish@release/v1
