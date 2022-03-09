@@ -130,11 +130,13 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: output content,
+    - name: output content
       run: echo ${{ needs.update-version.outputs.output1}}
       shell: bash
 
-
+    - name: set env var
+      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.output1 }}" >> $GITHUB_ENV
+      shell: bash
 
 #    - name: Variable ausgeben
 #      run: echo "${{ JSLTESTVAR }}"
