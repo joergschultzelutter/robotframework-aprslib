@@ -50,7 +50,7 @@ jobs:
   update-version:
     runs-on: ubuntu-latest
     outputs: 
-      output1: ${{ steps.regex.outputs.group1 }}
+      my-program-version: ${{ steps.regex.outputs.group1 }}
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -80,36 +80,11 @@ jobs:
         if: ${{ steps.regex.outputs.match == '' }}
         run: sleep 60s
         shell: bash
-      # Write version to 'VERSION' file
-      # As an additional safeguard, the Write command will fail
-      # in case the Regex lookup was unsuccessful and the 
-      # 'cancel build' command didn't kill off our job in time
-      # so don't use an 'if' statement here!
-      #
-      # 'path' needs to be set relative to repo root
-      - name: Write local VERSION file to work repo
-        uses: DamianReeves/write-file-action@master
-        with:
-          path: './VERSION'
-          contents: "${{ steps.regex.outputs.group1 }}"
-          write-mode: overwrite
-      # Push 'VERSION' file to repo.
-      #
-      # 'file-path' does not seem to support absolute or
-      # relative paths, thus making the 'VERSION' file appear 
-      # in the repo's root
-      - name: Update VERSION file in Repo
-        uses: test-room-7/action-update-file@v1
-        with:
-          file-path: 'VERSION'
-          commit-msg: Auto-update of VERSION file
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
   #
   # END of Job 1
   # 
-  # If you have reached this point in time, then the 'VERSION' file was
-  # successfully created/updated in the repo's root directory
+  # If you have reached this point in time, then the workflow was
+  # able to detect and extract the version info from your Python file
   #
 
   # 
@@ -124,11 +99,11 @@ jobs:
 
     steps:
     - name: output content
-      run: echo ${{ needs.update-version.outputs.output1}}
+      run: echo ${{ needs.update-version.outputs.my-program-version}}
       shell: bash
 
     - name: set env var
-      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.output1 }}" >> .env
+      run: echo "JSLTESTVAR=" "${{ needs.update-version.outputs.my-program-version }}" >> .env
       shell: bash
 
     - uses: actions/checkout@v2
@@ -137,22 +112,15 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-
-#    - name: Variable ausgeben
-#      run: echo "${{ JSLTESTVAR }}"
-#      shell: bash
-        
         
     # Install all dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build
-    - name: export my shit
-      run: export JSLTESTVAR=${{ needs.update-version.outputs.output1 }}
-    # Build the package
+    # Build the package. The export MUST be part of this step
     - name: Build package
-      run: python -m build
+      run: export GITHUB_PROGRAM_VERSION=${{ needs.update-version.outputs.my-program-version }};python -m build
     # Publish everything to Test PyPi
     - name: Publish package to Test PyPi
       uses: pypa/gh-action-pypi-publish@release/v1
