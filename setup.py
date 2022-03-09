@@ -6,7 +6,7 @@ import os
 if __name__ == "__main__":
 
 	print("========= DEMODEMO ==========")
-	print (os.getenv("JSLDEMOVAR"))
+	print (os.getenv("JSLTESTVAR"))
 	print("========= DEMODEMO ==========")
 
 	with open("README.md", "r") as fh:
