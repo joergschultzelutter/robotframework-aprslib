@@ -131,6 +131,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
+        
+    - name: Variable ausgeben
+      run: echo "${{ JSLTESTVAR }}"
+      shell: bash
+        
+        
     # Install all dependencies
     - name: Install dependencies
       run: |
