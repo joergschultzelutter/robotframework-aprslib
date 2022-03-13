@@ -19,8 +19,10 @@ The easiest way is to install this package is from pypi:
 
 In order to run these scripts, you need to add your call sign to the script's configuration section:
 
-    # This is your APRS-IS call sign. Replace this place holder with your personal call sign
-    ${callsign}   YOURCALLSIGN
+```robot
+# This is your APRS-IS call sign. Replace this place holder with your personal call sign
+${callsign}   YOURCALLSIGN
+```
 
 Replace the current placeholder with your call sign and you are good to go. The Robot Framework 5 examples use the new WHILE loop for an 'eternal' loop; all other code samples use finite FOR loops and will terminate after processing 10 records in a row.
 
