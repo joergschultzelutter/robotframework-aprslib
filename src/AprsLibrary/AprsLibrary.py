@@ -20,7 +20,7 @@
 #
 
 from robot.api.deco import library, keyword
-#from robot.api.logger import librarylogger as robotlogger
+
 import aprslib
 import re
 import logging
@@ -30,7 +30,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
 __author__ = "Joerg Schultze-Lutter"
 
 
@@ -160,16 +160,14 @@ class AprsLibrary:
 
         # Apply a crude format filter and check if we have received something valid
         if aprsis_filter != "":
-            matches = re.findall(
-                r"^[rpbotsdaegqmf]\/", aprsis_filter, re.IGNORECASE
-            )
+            matches = re.findall(r"^[rpbotsdaegqmf]\/", aprsis_filter, re.IGNORECASE)
             if not matches:
                 raise ValueError("Invalid APRS-IS server filter string")
         self.__aprsis_filter = aprsis_filter
 
     @aprsis_msgno.setter
     def aprsis_msgno(self, aprsis_msgno: int):
-        if not isinstance(aprsis_msgno,int):
+        if not isinstance(aprsis_msgno, int):
             raise ValueError(
                 "This function only accepts numeric values for the APRS-IS MsgNo"
             )
@@ -295,9 +293,9 @@ class AprsLibrary:
             raise ValueError("No input APRS packet specified")
         try:
             packet = aprslib.parse(aprs_packet)
-        except (aprslib.ParseError):
+        except aprslib.ParseError:
             raise ValueError("This APRS packet is invalid")
-        except (aprslib.UnknownFormat):
+        except aprslib.UnknownFormat:
             raise ValueError("Unknown APRS format")
         return packet
 
@@ -468,12 +466,14 @@ class AprsLibrary:
     # find out if a field exists or not.
     @keyword("Get Value From APRS Packet")
     def get_value_from_aprs_packet(self, aprs_packet, field_name):
-        if not isinstance(aprs_packet,(str, dict, bytes)):
-            raise TypeError(f"This packet does not look like a valid APRS message type: {type(aprs_packet)}")
+        if not isinstance(aprs_packet, (str, dict, bytes)):
+            raise TypeError(
+                f"This packet does not look like a valid APRS message type: {type(aprs_packet)}"
+            )
 
-        if isinstance(aprs_packet,(str, bytes)):
+        if isinstance(aprs_packet, (str, bytes)):
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
-            if isinstance(packet,dict):
+            if isinstance(packet, dict):
                 if field_name in packet:
                     return packet[field_name]
                 else:
@@ -555,12 +555,12 @@ class AprsLibrary:
     # raw format (str or bytes) OR decoded.
     @keyword("Check If APRS Packet Contains")
     def check_if_field_exists_in_packet(self, aprs_packet, field_name):
-        if not isinstance(aprs_packet,(str,dict,bytes)):
+        if not isinstance(aprs_packet, (str, dict, bytes)):
             raise TypeError("This does not look like a valid APRS message type")
 
-        if isinstance(aprs_packet,(str,bytes)):
+        if isinstance(aprs_packet, (str, bytes)):
             packet = self.parse_aprs_packet(aprs_packet=aprs_packet)
-            if isinstance(packet,dict):
+            if isinstance(packet, dict):
                 return True if field_name in packet else False
         else:
             return True if field_name in aprs_packet else False

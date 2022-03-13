@@ -3,29 +3,32 @@
 
 ```robotframework-aprslib``` is a [Robot Framework](https://www.robotframework.org) keyword collection for the [aprslib](https://github.com/rossengeorgiev/aprs-python) Python library. It allows __licensed ham radio operators__ to establish a connection to the APRS-IS servers and send/receive/decode APRS requests.
 
-![transmit](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/tx.jpg)![robot](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg)![receive](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/rx.jpg)
+![transmit](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/tx.jpg?raw=true)
+
+![robot](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg?raw=true)
+
+![receive](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg?raw=true)
 
 ## Installation
 
-- clone repository
-- ``pip install -r dependencies.txt``
+The easiest way is to install this package is from pypi:
+
+    pip install robotframework-aprslib
 
 ## Robot Framework Library Examples
 
-In order to run these scripts, you need to change them and add your call sign to the script's configuration section:
+In order to run these scripts, you need to add your call sign to the script's configuration section:
 
     # This is your APRS-IS call sign. Replace this place holder with your personal call sign
-    ${callsign}                 YOURCALLSIGN
+    ${callsign}   YOURCALLSIGN
 
-Replace the current placeholder with your call sign and you are good to go.
+Replace the current placeholder with your call sign and you are good to go. The Robot Framework 5 examples use the new WHILE loop for an 'eternal' loop; all other code samples use finite FOR loops and will terminate after processing 10 records in a row.
 
-- [Echo incoming APRS messages](tests/echo_aprsis_traffic.robot)
-- [Send and receive a single APRS message](tests/send_and_receive_single_packet.robot)
-- [Receive a message, acknowledge it if necessary and then respond to it](tests/receive_and_send_single_packet.robot)
-- [ROBOT FRAMEWORK 5: Echo incoming APRS messages](tests/rf5_echo_aprsis_traffic.robot)
-- [ROBOT FRAMEWORK 5: Receive a message, acknowledge it if necessary and then respond to it](tests/rf5_receive_and_send.robot)
-
-The Robot Framework 5 examples use the new WHILE loop for an 'eternal' loop; all other code samples use finite FOR loops and will terminate after processing 10 records in a row
+- [Echo incoming APRS messages](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/tests/echo_aprsis_traffic.robot)
+- [Send and receive a single APRS message](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/tests/send_and_receive_single_packet.robot)
+- [Receive a message, acknowledge it if necessary and then respond to it](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/tests/receive_and_send_single_packet.robot)
+- [ROBOT FRAMEWORK 5: Echo incoming APRS messages](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/tests/rf5_echo_aprsis_traffic.robot)
+- [ROBOT FRAMEWORK 5: Receive a message, acknowledge it if necessary and then respond to it](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/tests/rf5_receive_and_send.robot)
 
 ## Library usage and supported keywords
 
@@ -48,7 +51,7 @@ You can either specify all parameters during the initial setup of the library or
 
 #### Option 1 - set as position parameters
 
-```robotframework
+```robot
 *** Settings ***
 
 Library  AprsLibrary  server_value  port_value  user_value  passcode_value  filter_value  message_value
@@ -59,7 +62,7 @@ My first test case
 
 #### Option 2 - set as named parameters
 
-```robotframework
+```robot
 *** Settings ***
 
 Library  AprsLibrary  aprsis_server=server_value  aprsis_port=port_value  aprsis_callsign=user_value  aprsis_passcode=passcode_value  aprsis_filter=filter_value aprsis_msgno = msgno_value
@@ -108,6 +111,6 @@ My first test case
 
 ## The fine print
 
-- APRS is a registered trademark of APRS Software and Bob Bruninga, WB4APR. Thank you Bob!
+- APRS is a registered trademark of APRS Software and Bob Bruninga, WB4APR. Thank you, Bob!
 - This is a hobby project. It has no commercial background whatsoever.
 - Exchanging data with APRS(-IS) __requires you to be a licensed ham radio operator__. If you don't know what APRS is, then this library is not for you. Alternatively, you may want to explore the option of getting your own amateur radio license (it's a great hobby).
