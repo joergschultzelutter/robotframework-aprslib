@@ -33,7 +33,6 @@ if __name__ == "__main__":
 			"Framework :: Robot Framework :: Library",
 			"Topic :: Software Development",
 			"Topic :: Software Development :: Testing",
-			"Topic :: Software Development :: Testing",
 			"Topic :: Software Development :: Quality Assurance",
 			"Topic :: Communications :: Ham Radio",
 		],
