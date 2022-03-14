@@ -62,7 +62,7 @@ env:
 
   # relative path to your file, e.g.
   # ./src/MyLib/MyLib.py
-  SOURCE_FILE: ./src/AprsLibrary/AprsLibrary.py
+  SOURCE_FILE: ./AprsLibrary/AprsLibrary.py
 
   # Regex pattern used for extracting the version data from your file
   # (usually, this does not need to be changed)
