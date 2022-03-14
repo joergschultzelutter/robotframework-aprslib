@@ -22,6 +22,7 @@ if __name__ == "__main__":
     		packages=find_packages(),
 		author_email="joerg.schultze.lutter@gmail.com",
 		url="https://github.com/joergschultzelutter/robotframework-aprslib",
+		include_package_data=True,
 		classifiers=[
 			"Intended Audience :: Developers",
 			"Programming Language :: Python :: 3",
