@@ -19,6 +19,8 @@ if __name__ == "__main__":
 		long_description=long_description,
 		long_description_content_type="text/markdown",
 		author="Joerg Schultze-Lutter",
+    		package_dir={"": "src"},
+    		packages=find_packages("src"),
 		author_email="joerg.schultze.lutter@gmail.com",
 		url="https://github.com/joergschultzelutter/robotframework-aprslib",
 		packages=find_packages(),
