@@ -7,7 +7,7 @@
 
 ![robot](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg?raw=true)
 
-![receive](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/robot.jpg?raw=true)
+![receive](https://github.com/joergschultzelutter/robotframework-aprslib/blob/master/img/rx.jpg?raw=true)
 
 ## Installation
 
