@@ -61,7 +61,7 @@ on:
 env:
 
   # relative path to your file, e.g.
-  # ./src/MyLib/MyLib.py
+  # ./MyLib/MyLib.py
   SOURCE_FILE: ./AprsLibrary/AprsLibrary.py
 
   # Regex pattern used for extracting the version data from your file
@@ -84,6 +84,7 @@ jobs:
   # to next Github Actions job in line.
   get-python-version-info:
     runs-on: ubuntu-latest
+    permissions: write-all
 
     # Output which is passed to the PyPi publication job
     outputs: 
@@ -91,7 +92,7 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3.5.3
 
       # Read source file
       - name: Read source file
@@ -111,7 +112,7 @@ jobs:
       # Cancellation will have no immediate effect!!!
       - name: Cancel build if version not found
         if: ${{ steps.regex.outputs.match == '' }}
-        uses: andymckay/cancel-action@0.2
+        uses: andymckay/cancel-action@0.3
       # Execute sleep if cancellation was triggered
       - name: Sleep if build was cancelled
         if: ${{ steps.regex.outputs.match == '' }}
@@ -122,7 +123,7 @@ jobs:
       # assigned by Github; only if you tag a release, this value will be 'tag'
       - name: Cancel build if Github reference is not equal to tag
         if: ${{ github.ref_type != 'tag' }}
-        uses: andymckay/cancel-action@0.2
+        uses: andymckay/cancel-action@0.3
       # Execute sleep if cancellation was triggered
       - name: Sleep if build was cancelled
         if: ${{ github.ref_type != 'tag' }}
@@ -132,7 +133,7 @@ jobs:
       # Cancel the work flow if assessment is not true
       - name: Cancel build if Github refname is not equal to Python version
         if: ${{ github.ref_name != steps.regex.outputs.group1 }}
-        uses: andymckay/cancel-action@0.2
+        uses: andymckay/cancel-action@0.3
       # Execute sleep if cancellation was triggered
       - name: Sleep if build was cancelled
         if: ${{ github.ref_name != steps.regex.outputs.group1 }}
@@ -158,10 +159,10 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.5.3
     # Set up Python environment
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '${{ env.PYTHON_VERSION }}'
         
